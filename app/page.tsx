@@ -1,69 +1,140 @@
-import Image from "next/image";
+"use client";
+
+import { MapPreview } from "@/components/map/map-preview";
+import { StudyRoomPreview } from "@/components/rooms/study-room-preview";
+import { SiteHeader } from "@/components/site-header";
+import { defaultMap } from "@/data/sample-maps";
+import { studyRooms } from "@/data/study-rooms";
+import { useTheme } from "@/hooks/use-theme";
+import { ArrowDown, ArrowUpRight, Check, Headphones, Star, Users } from "lucide-react";
+import Link from "next/link";
+
+const steps = [
+  ["01", "Find your table", "Choose a room that matches your energy and the thing you want to learn."],
+  ["02", "Settle in", "Start a gentle focus session, keep your camera off, and make progress beside others."],
+  ["03", "Grow your map", "Capture what you learn in connected bibbles you can come back to anytime."],
+];
 
 export default function Home() {
+  const { motif } = useTheme();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main className="home-page">
+      <SiteHeader />
+      <section className="hero-section hero-study-section">
+        <div className="hero-copy">
+          <span className="eyebrow">
+            <Headphones size={14} /> {motif.fruitEmoji} Study together, softly
+          </span>
+          <h1>
+            A cozy little space to <em>grow</em> what you know.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p>
+            Find a quiet room, settle into a focus session, and learn alongside people who are making room for the same kind of progress.
           </p>
+          <div className="hero-actions">
+            <Link href="/rooms" className="button-primary">
+              Find a study room <ArrowUpRight size={17} />
+            </Link>
+            <Link href="/create" className="button-secondary">
+              Create a map <ArrowDown size={16} />
+            </Link>
+          </div>
+          <div className="hero-note">
+            <span className="avatar-stack">
+              <i />
+              <i />
+              <i />
+            </span>
+            <span>{motif.treatEmoji} 21 curious minds are learning together.</span>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <StudyRoomPreview room={studyRooms[0]} />
+      </section>
+      <section className="rooms-preview">
+        <div className="rooms-preview-heading">
+          <div>
+            <span className="eyebrow">
+              <Headphones size={14} /> {motif.fruitEmoji} More study rooms
+            </span>
+            <h2>Good company for the quiet parts.</h2>
+          </div>
+          <Link href="/rooms" className="text-link">
+            See all rooms <ArrowUpRight size={16} />
+          </Link>
         </div>
-      </main>
-    </div>
+        <div className="rooms-preview-grid">
+          {studyRooms.slice(1, 4).map((room) => (
+            <Link
+              href={`/rooms/${room.id}`}
+              className={`mini-room mini-room-${room.color}`}
+              key={room.id}
+            >
+              <span className="mini-room-icon">
+                {motif.fruitEmoji}
+              </span>
+              <div className="mini-room-info">
+                <strong>{room.name}</strong>
+                <span>{room.topic}</span>
+              </div>
+              <small>
+                <Users size={12} /> {room.participants} learning
+              </small>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="how-section">
+        <div className="section-heading">
+          <span className="eyebrow">
+            <Star size={14} /> {motif.secondaryFruitEmoji} The Bibble way
+          </span>
+          <h2>Learning is more memorable when it has a shape.</h2>
+        </div>
+        <div className="how-grid">
+          {steps.map(([number, title, copy]) => (
+            <div className="how-item" key={number}>
+              <span>{number}</span>
+              <h3>{title}</h3>
+              <p>{copy}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="showcase-section">
+        <div className="showcase-copy">
+          <span className="eyebrow">
+            <Star size={14} /> {motif.brandEmoji} Your learning world
+          </span>
+          <h2>Take the quiet work with you.</h2>
+          <p>
+            Turn a good study session into a visual map. Connect the ideas that clicked and keep your next step close.
+          </p>
+          <Link href="/map/dsa-roadmap" className="text-link">
+            Explore a learning map <ArrowUpRight size={16} />
+          </Link>
+        </div>
+        <div className="showcase-preview">
+          <MapPreview map={defaultMap} />
+        </div>
+      </section>
+
+      <section className="final-cta cozy-wallpaper-pattern">
+        <Star size={22} />
+        <h2>Make a little room for what comes next {motif.fruitEmoji}</h2>
+        <Link href="/rooms" className="button-primary">
+          Find your study table <ArrowUpRight size={17} />
+        </Link>
+      </section>
+
+      <footer className="site-footer">
+        <span>© 2026 Bibble</span>
+        <span>
+          <Check size={14} /> {motif.treatEmoji} A calm place to learn
+        </span>
+      </footer>
+    </main>
   );
 }

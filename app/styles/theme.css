@@ -1,0 +1,94 @@
+/*
+ * Theme contract
+ *
+ * Components should prefer these role-based variables over raw colors. The
+ * compatibility aliases at the end keep existing UI stable while screens are
+ * migrated incrementally.
+ */
+
+:root,
+html[data-theme="strawberry-red"] {
+  color-scheme: light;
+  --surface-page: #fff0f3;
+  --surface-card: #ffffff;
+  --surface-soft: #fde2e7;
+  --surface-strong: #f8bac7;
+  --text-primary: #2a060d;
+  --text-muted: #5e1f29;
+  --brand: #c91035;
+  --brand-hover: #a60927;
+  --brand-soft: #fbc6d0;
+  --accent: #d83452;
+  --theme-accent: #d83452;
+  --border-subtle: #f29eb0;
+  --shadow-color: 70, 10, 25;
+  --status-live: #0d8a5a;
+  --canvas-dot: #e38a9d;
+  --canvas-edge: #c94f66;
+  --canvas-node: #f5b0bf;
+  --wallpaper-bg: #fde2e7;
+  --wallpaper-dot: #f29eb0;
+  --theme-motif-symbol: "🍓";
+}
+
+html[data-theme="refreshing-green"] {
+  color-scheme: light;
+  --surface-page: #f2f9f4;
+  --surface-card: #ffffff;
+  --surface-soft: #e2f4e6;
+  --surface-strong: #c3ebd0;
+  --text-primary: #0a2e18;
+  --text-muted: #3d5e49;
+  --brand: #127347;
+  --brand-hover: #0b5936;
+  --brand-soft: #ccf0d8;
+  --accent: #52ab71;
+  --theme-accent: #52ab71;
+  --border-subtle: #a4dcba;
+  --shadow-color: 20, 75, 40;
+  --status-live: #127347;
+  --canvas-dot: #94d1ab;
+  --canvas-edge: #52ab71;
+  --canvas-node: #b9e9cb;
+  --wallpaper-bg: #e2f4e6;
+  --wallpaper-dot: #a4dcba;
+  --theme-motif-symbol: "🍏";
+}
+
+html[data-theme="strawberry-lemonade"] {
+  color-scheme: light;
+  --surface-page: #fff8f2;
+  --surface-card: #ffffff;
+  --surface-soft: #ffe8df;
+  --surface-strong: #fdd2c3;
+  --text-primary: #122c35;
+  --text-muted: #3d555c;
+  --brand: #d63864;
+  --brand-hover: #b5254c;
+  --brand-soft: #ffd9e4;
+  --accent: #1e9d89;
+  --theme-accent: #1e9d89;
+  --border-subtle: #f5b4a1;
+  --shadow-color: 90, 45, 55;
+  --status-live: #1e9d89;
+  --canvas-dot: #e8a594;
+  --canvas-edge: #d66c5a;
+  --canvas-node: #f7c5b6;
+  --wallpaper-bg: #ffe8df;
+  --wallpaper-dot: #f5b4a1;
+  --theme-motif-symbol: "🌺";
+}
+
+/* Temporary aliases for existing components. Do not introduce new usage. */
+:root {
+  --background: var(--surface-page);
+  --foreground: var(--text-primary);
+  --primary: var(--brand);
+  --secondary: var(--brand-soft);
+  --muted: var(--text-muted);
+  --card: var(--surface-card);
+  --border: var(--border-subtle);
+  --lavender: var(--surface-soft);
+  --shadow: 0 18px 50px rgb(var(--shadow-color) / 0.12);
+}
+

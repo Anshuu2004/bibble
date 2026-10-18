@@ -1,0 +1,123 @@
+.page {
+  min-height: 100vh;
+  padding: 28px 24px 48px;
+  background: var(--background);
+}
+
+.header {
+  width: min(1040px, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto 48px;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font: 700 12px Arial, sans-serif;
+}
+
+.back:hover { color: var(--primary); }
+
+.shell {
+  width: min(440px, 100%);
+  margin: 0 auto;
+  padding: 34px;
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.eyebrow { margin-bottom: 12px; }
+
+.title {
+  margin: 0;
+  color: var(--foreground);
+  font: 400 clamp(32px, 5vw, 42px) var(--font-display), Georgia, serif;
+  letter-spacing: -.04em;
+}
+
+.copy {
+  margin: 10px 0 26px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.form { display: grid; gap: 16px; }
+
+.field { display: grid; gap: 7px; }
+
+.field label {
+  color: var(--foreground);
+  font: 700 12px Arial, sans-serif;
+}
+
+.field input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 14px;
+}
+
+.field input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+}
+
+.submit {
+  display: inline-flex;
+  min-height: 45px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 99px;
+  cursor: pointer;
+  background: var(--primary);
+  color: #fff;
+  font: 700 13px Arial, sans-serif;
+}
+
+.submit:hover { background: var(--brand-hover); }
+
+.message {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--brand-soft);
+  color: var(--foreground);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.switch {
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.switch a { color: var(--primary); font-weight: 800; }
+
+.note {
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .page { padding-inline: 16px; }
+  .header { margin-bottom: 30px; }
+  .shell { padding: 26px 20px; }
+}
