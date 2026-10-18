@@ -34,7 +34,7 @@ export default function Home() {
           </p>
           <div className="hero-actions">
             <Link href="/rooms" className="button-primary">
-              Find a study room <ArrowUpRight size={17} />
+              Preview this project <ArrowUpRight size={17} />
             </Link>
             <Link href="/create" className="button-secondary">
               Create a map <ArrowDown size={16} />
