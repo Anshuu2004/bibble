@@ -1,6 +1,5 @@
 "use client";
 
-import { useTheme } from "@/hooks/use-theme";
 import type { StudyRoom } from "@/types/room";
 import { ArrowUpRight, BookOpen, Clock3, Headphones, Sparkles, Users, Zap } from "lucide-react";
 import Link from "next/link";
@@ -13,7 +12,6 @@ const moodIcons = {
 };
 
 export function StudyRoomCard({ room }: { room: StudyRoom }) {
-  const { motif } = useTheme();
   const MoodIcon = moodIcons[room.mood as keyof typeof moodIcons] || Headphones;
 
   return (

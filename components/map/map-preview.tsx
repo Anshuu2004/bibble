@@ -11,19 +11,18 @@ import {
   useNodesState,
   type Node,
 } from "@xyflow/react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 const nodeTypes = { bibble: BibbleNode };
 
 export function MapPreview({ map, compact = false }: { map: LearningMap; compact?: boolean }) {
   const initial = useMemo(() => mapToFlow(map), [map]);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node<BibbleNodeData>>(initial.nodes);
-
-  useEffect(() => {
-    setNodes(initial.nodes);
-    setSelectedNode(null);
-  }, [initial, setNodes]);
+  // Only the interactive preview needs a mutable copy of the nodes. Cards and
+  // the create page read them straight from the map data, so they stay in sync
+  // with the prop without an effect that writes state on every change.
+  const [interactiveNodes, , onNodesChange] = useNodesState<Node<BibbleNodeData>>(initial.nodes);
+  const nodes = compact ? initial.nodes : interactiveNodes;
 
   const handleNodeClick = useCallback((_: React.MouseEvent, node: Node<BibbleNodeData>) => {
     setSelectedNode(node.id);

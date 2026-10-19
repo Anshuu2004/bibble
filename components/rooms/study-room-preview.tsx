@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ArrowUpRight, Check, Clock3, Headphones, Play, Users } from "lucide-react";
-import { motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -70,111 +69,6 @@ export function StudyRoomPreview({ room }: { room: StudyRoom }) {
           <Button asChild size="sm" className="rounded-full px-4 font-bold"><Link href={`/rooms/${room.id}`}>Enter room <ArrowUpRight /></Link></Button>
         </CardFooter>
       </Card>
-    </div>
-  );
-}
-
-export function StudyRoomPreviewLegacy({ room }: { room: StudyRoom }) {
-  const { motif } = useTheme();
-  const [seconds, setSeconds] = useState(42 * 60);
-  const [active, setActive] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    if (!active) return;
-    const timer = window.setInterval(() => setSeconds((value) => Math.max(0, value - 1)), 1000);
-    return () => window.clearInterval(timer);
-  }, [active]);
-
-  const time = `${Math.floor(seconds / 60).toString().padStart(2, "0")}:${(seconds % 60).toString().padStart(2, "0")}`;
-
-  // React first renders this component on the server. Keep that initial frame
-  // deterministic, then enable the interactive scene once hydration is done.
-  if (!hydrated) {
-    return (
-      <div className={`study-room-preview study-room-preview-${room.color} preview-static`} aria-label={`${room.name} study room preview`}>
-        <div className="study-preview-static-top">
-          <span>Live study room</span>
-          <span>{room.participants + 1}/{room.capacity} seats</span>
-        </div>
-        <div className="study-preview-static-scene">
-          <div className="study-preview-static-board">
-            <span>Today&apos;s focus</span>
-            <strong>{room.topic}</strong>
-            <p>One small step at a time.</p>
-          </div>
-        </div>
-        <div className="study-preview-static-content">
-          <span className="eyebrow"><Headphones size={13} /> {room.topic}</span>
-          <h2>{room.name}</h2>
-          <p>{room.description}</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className={`study-room-preview study-room-preview-${room.color}`}>
-      <div className="study-preview-top">
-        <span className="room-mood">
-          Live study room · {motif.fruitEmoji}
-        </span>
-        <span>{room.participants + 1}/{room.capacity} seats</span>
-      </div>
-      <div className="study-preview-scene cozy-wallpaper-pattern">
-        <div className="theme-sticker-badge">
-          {motif.brandEmoji} {motif.name}
-        </div>
-      </div>
-      <div className="study-preview-content">
-        <div>
-          <span className="eyebrow">
-            <Headphones size={13} /> {room.topic}
-          </span>
-          <h2>{room.name}</h2>
-          <p>{room.description}</p>
-        </div>
-        <div className="preview-avatars">
-          <div className="avatar-circles">
-            <span className="person-avatar person-avatar-0">M</span>
-            <span className="person-avatar person-avatar-1">N</span>
-            <span className="person-avatar person-avatar-you">Y</span>
-          </div>
-          <small><Users size={12} /> studying</small>
-        </div>
-      </div>
-      <div className="study-preview-footer">
-        <button
-          className="preview-timer preview-timer-button"
-          onClick={() => setActive((value) => !value)}
-          aria-label={active ? "Pause focus session" : "Start focus session"}
-        >
-          <Clock3 size={16} />
-          <strong>{time}</strong>
-          <span>{active ? "pause focus" : "start focus"}</span>
-        </button>
-        <Link href={`/rooms/${room.id}`} className="preview-enter">
-          Enter room <ArrowUpRight size={16} />
-        </Link>
-      </div>
-      <motion.div
-        className="preview-floating-note"
-        animate={{ y: [0, -5, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <Check size={14} /> {active ? "Focus mode is on" : `${motif.fruitEmoji} ${motif.treatName}`}
-      </motion.div>
-      <button
-        className="preview-play"
-        onClick={() => setActive((value) => !value)}
-        aria-label={active ? "Pause focus session" : "Start focus session"}
-      >
-        <Play size={14} fill="currentColor" />
-      </button>
     </div>
   );
 }
