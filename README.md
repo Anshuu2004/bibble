@@ -1,7 +1,7 @@
 <div align="center">
 
 # 💗🍓 Bibble 🍓💗
-
+### If you liked the Repo Please Do give it a 🌟 ###
 ### a soft little corner of the internet to grow what you know ☁️
 
 <img src="https://readme-typing-svg.demolab.com?font=Nunito&weight=700&size=20&pause=1400&color=DE7895&center=true&vCenter=true&width=520&lines=Make+room+for+what+you%E2%80%99re+learning+%F0%9F%8C%B7;Small+steps+still+count+%F0%9F%92%97;A+cozy+space+to+learn+at+your+own+pace+%E2%98%81%EF%B8%8F" alt="An animated message about learning at your own pace" />
