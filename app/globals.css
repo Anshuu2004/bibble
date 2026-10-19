@@ -70,12 +70,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
    2. HEADER & NAVIGATION
    ========================================================================== */
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  background: color-mix(in srgb, var(--background) 88%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+.site-header-inner {
   width: min(1180px, calc(100% - 48px));
   height: 84px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: auto;
+  margin: 0 auto;
 }
 .brand {
   display: inline-flex;
@@ -159,7 +170,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 /* ==========================================================================
    3. HOME PAGE SECTIONS
    ========================================================================== */
-.home-page, .app-page { min-height: 100vh; background: var(--background); overflow-x: hidden; }
+.home-page, .app-page { min-height: 100vh; background: var(--background); overflow-x: clip; }
 
 .hero-study-section {
   display: grid;
@@ -604,7 +615,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 /* ==========================================================================
    4. ROOMS INDEX PAGE (/rooms)
    ========================================================================== */
-.rooms-page { min-height: 100vh; background: var(--background); overflow-x: hidden; }
+.rooms-page { min-height: 100vh; background: var(--background); overflow-x: clip; }
 .rooms-intro { width: min(1180px, calc(100% - 48px)); margin: 40px auto 36px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 24px; }
 .rooms-intro h1 { margin: 12px 0 8px; font-size: 44px; font-weight: 500; letter-spacing: -.04em; color: var(--foreground); }
 .rooms-intro h1 em { color: var(--primary); font-style: italic; }
@@ -759,7 +770,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 /* ==========================================================================
    5. STUDY ROOM DETAIL PAGE (/rooms/[id])
    ========================================================================== */
-.room-page { min-height: 100vh; background: var(--background); overflow-x: hidden; }
+.room-page { min-height: 100vh; background: var(--background); overflow-x: clip; }
 
 .room-header {
   height: 80px;
@@ -1118,7 +1129,7 @@ html[data-theme="strawberry-lemonade"] .room-roomscape::before {
 /* ==========================================================================
    6. EXPLORE MAPS & CREATE FORM (/explore, /create, /map/[id])
    ========================================================================== */
-.explore-page { min-height: 100vh; background: var(--background); overflow-x: hidden; }
+.explore-page { min-height: 100vh; background: var(--background); overflow-x: clip; }
 .page-intro, .explore-intro { width: min(1180px, calc(100% - 48px)); margin: 40px auto 32px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 24px; }
 .page-intro h1, .explore-intro h1 { margin: 12px 0 8px; font-size: clamp(32px, 4vw, 44px); font-weight: 500; letter-spacing: -.04em; color: var(--foreground); }
 .page-intro h1 em, .explore-intro h1 em { color: var(--primary); font-style: italic; }
@@ -1313,7 +1324,7 @@ html[data-theme="strawberry-lemonade"] .cozy-wallpaper-pattern::before {
    7. RESPONSIVE BREAKPOINTS
    ========================================================================== */
 @media (max-width: 1000px) {
-  .site-header { height: auto; min-height: 84px; padding-block: 14px; gap: 18px; }
+  .site-header-inner { height: auto; min-height: 84px; padding-block: 14px; gap: 18px; }
   .site-nav { justify-content: flex-end; flex-wrap: wrap; gap: 12px 18px; }
   .hero-study-section { grid-template-columns: 1fr; gap: 40px; }
   .rooms-preview-grid { grid-template-columns: 1fr; }
@@ -1324,8 +1335,8 @@ html[data-theme="strawberry-lemonade"] .cozy-wallpaper-pattern::before {
 }
 
 @media (max-width: 650px) {
-  .site-header { width: min(100% - 32px, 1180px); flex-direction: column; align-items: flex-start; }
-  .site-nav { width: 100%; justify-content: flex-start; }
+  .site-header-inner { width: min(100% - 32px, 1180px); flex-direction: column; align-items: flex-start; padding-block: 12px; gap: 12px; }
+  .site-nav { width: 100%; justify-content: flex-start; flex-wrap: wrap; gap: 10px 14px; }
   .nav-cta { padding: 8px 13px; }
   .how-grid { grid-template-columns: 1fr; gap: 24px; }
   .map-grid { grid-template-columns: 1fr; }
