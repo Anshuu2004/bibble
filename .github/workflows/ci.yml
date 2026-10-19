@@ -1,0 +1,74 @@
+
+name: PR Issue Reference
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: read
+  issues: read
+
+jobs:
+  check-issue:
+    name: Check Issue Reference
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check for linked issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const body = pr.body || "";
+
+            // Require a closing reference such as Closes #15.
+            const pattern =
+              /(?:close[sd]?|fix(?:es|ed)?|resolve[sd]?)\s+#(\d+)/i;
+
+            const match = body.match(pattern);
+
+            if (!match) {
+              core.setFailed(
+                "Please link the issue addressed by this PR. " +
+                "Add a reference such as: Closes #15"
+              );
+              return;
+            }
+
+            const issueNumber = Number(match[1]);
+
+            // Reject references to the PR itself.
+            if (issueNumber === pr.number) {
+              core.setFailed(
+                "The reference points to this pull request, not an issue."
+              );
+              return;
+            }
+
+            // Verify that the referenced issue exists in this repository.
+            try {
+              const { data: issue } =
+                await github.rest.issues.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber
+                });
+
+              if (issue.pull_request) {
+                core.setFailed(
+                  `#${issueNumber} is another pull request, not an issue.`
+                );
+                return;
+              }
+
+              core.notice(`Issue #${issueNumber} exists.`);
+            } catch (error) {
+              if (error.status === 404) {
+                core.setFailed(
+                  `Issue #${issueNumber} was not found in this repository.`
+                );
+              } else {
+                throw error;
+              }
+            }
