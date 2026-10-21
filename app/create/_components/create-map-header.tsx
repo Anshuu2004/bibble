@@ -1,3 +1,4 @@
+import { ThemePicker } from "@/components/ui/theme-picker";
 import { useTheme } from "@/hooks/use-theme";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -14,9 +15,12 @@ export function CreateMapHeader() {
         </span>
         <span>Bibble</span>
       </Link>
-      <Link href="/explore" className={styles.browseLink}>
-        <ArrowLeft size={15} /> Browse maps
-      </Link>
+      <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+        <ThemePicker compact />
+        <Link href="/explore" className={styles.browseLink}>
+          <ArrowLeft size={15} /> Browse maps
+        </Link>
+      </div>
     </header>
   );
 }

@@ -66,7 +66,7 @@ export function StudyRoomPreview({ room }: { room: StudyRoom }) {
             <AvatarGroup>{["M", "N", "Y"].map((person) => <Avatar key={person} size="sm"><AvatarFallback className="bg-card text-[var(--primary)] font-bold">{person}</AvatarFallback></Avatar>)}</AvatarGroup>
             <span className="inline-flex items-center gap-1 text-xs font-bold text-[var(--muted)]"><Users size={14} /> studying now</span>
           </div>
-          <Button asChild size="sm" className="rounded-full px-4 font-bold"><Link href={`/rooms/${room.id}`}>Enter room <ArrowUpRight /></Link></Button>
+          <Button asChild size="sm" className="button-primary !min-h-[38px] !px-4 !text-xs font-bold shadow-sm"><Link href={`/rooms/${room.id}`}>Enter room <ArrowUpRight /></Link></Button>
         </CardFooter>
       </Card>
     </div>
