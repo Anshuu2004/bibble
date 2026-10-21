@@ -1167,8 +1167,8 @@ html[data-theme="strawberry-lemonade"] .room-roomscape::before {
 .map-card h2 { margin: 10px 0 6px; font-size: 22px; font-weight: 500; letter-spacing: -.03em; color: var(--foreground); }
 .map-card p { min-height: 40px; margin: 0 0 16px; color: var(--muted); font-size: 14px; line-height: 1.45; }
 .map-card-footer { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
-.tiny-progress { flex: 1; height: 6px; overflow: hidden; border-radius: 99px; background: var(--border); }
-.tiny-progress span { display: block; height: 100%; border-radius: inherit; background: var(--primary); }
+.tiny-progress { flex: 1; min-width: 0; height: 6px; overflow: hidden; border-radius: 99px; background: var(--brand-soft); }
+.tiny-progress span { display: block; max-width: 100%; height: 100%; border-radius: inherit; background: var(--primary); transition: width 0.35s ease; }
 .round-link { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--primary); flex-shrink: 0; }
 
 /* Interactive Flow Canvas (/map/[id]) */
