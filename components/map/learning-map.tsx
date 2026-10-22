@@ -3,8 +3,10 @@
 import { BibbleDetails } from "@/components/bibble/bibble-details";
 import { BibbleNode } from "@/components/bibble/bibble-node";
 import { MapToolbar } from "@/components/map/map-toolbar";
+import { MapHeader } from "@/components/map/map-header";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { flowToMap, mapToFlow } from "@/lib/map-utils";
+import { getMapProgress } from "@/data/sample-maps";
 import type { Bibble, BibbleNodeData, LearningMap } from "@/types/map";
 import {
   addEdge,
@@ -22,6 +24,7 @@ import {
 } from "@xyflow/react";
 import { ArrowLeft, Star, Trash2 } from "lucide-react";
 import { AnimatePresence } from "motion/react";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const nodeTypes = { bibble: BibbleNode };
@@ -32,17 +35,57 @@ export function LearningMapCanvas({ initialMap, editable = false }: { initialMap
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialFlow.edges);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
-  const [, setStoredMaps] = useLocalStorage<LearningMap[]>("bibble-maps", []);
+  const [storedMaps, setStoredMaps, hydrated] = useLocalStorage<LearningMap[]>("bibble-maps", []);
   const flowRef = useRef<ReactFlowInstance<Node<BibbleNodeData>, Edge> | null>(null);
-  const selected = nodes.find((node) => node.id === selectedId)?.data as BibbleNodeData | undefined;
+
+  // Keep refs updated for save callback
+  const nodesRef = useRef(nodes);
+  const edgesRef = useRef(edges);
 
   useEffect(() => {
-    setNodes(initialFlow.nodes);
-    setEdges(initialFlow.edges);
-  }, [initialFlow, setEdges, setNodes]);
+    nodesRef.current = nodes;
+  }, [nodes]);
+
+  useEffect(() => {
+    edgesRef.current = edges;
+  }, [edges]);
+
+  const selected = nodes.find((node) => node.id === selectedId)?.data as BibbleNodeData | undefined;
+
+  // Load from localStorage once hydrated
+  useEffect(() => {
+    if (hydrated) {
+      const savedMap = storedMaps.find((m) => m.id === initialMap.id);
+      if (savedMap) {
+        const flow = mapToFlow(savedMap);
+        setNodes(flow.nodes);
+        setEdges(flow.edges);
+      }
+    }
+  }, [hydrated, initialMap.id, setEdges, setNodes, storedMaps]);
 
   const onConnect = useCallback((connection: Connection) => setEdges((current) => addEdge({ ...connection, type: "smoothstep", animated: true, style: { stroke: "var(--canvas-edge)", strokeWidth: 2 } }, current)), [setEdges]);
-  const updateSelected = (bibble: Bibble) => setNodes((current) => current.map((node) => node.id === bibble.id ? { ...node, data: bibble as BibbleNodeData } : node));
+
+  /** Update a single node in React state (immediate UI feedback) */
+  const updateSelected = (bibble: Bibble) =>
+    setNodes((current) => current.map((node) => node.id === bibble.id ? { ...node, data: bibble as BibbleNodeData } : node));
+
+  /**
+   * Persist the map to localStorage.
+   * Accepts an optional `updatedBibble` so the save can include a just-edited
+   * bibble before React flushes the setNodes() call (avoids stale-state race).
+   */
+  const saveMap = useCallback((updatedBibble?: Bibble) => {
+    // Build node list with the updated bibble merged in (if provided)
+    const currentNodes = updatedBibble
+      ? nodesRef.current.map((n) => n.id === updatedBibble.id ? { ...n, data: updatedBibble as BibbleNodeData } : n)
+      : nodesRef.current;
+    const next = flowToMap(initialMap, currentNodes, edgesRef.current);
+    setStoredMaps((current) => [...current.filter((m) => m.id !== next.id), next]);
+    setSaved(true);
+    window.setTimeout(() => setSaved(false), 1800);
+  }, [initialMap, setStoredMaps]);
+
   const addBibble = () => {
     const id = `bibble-${Date.now()}`;
     setNodes((current) => [
@@ -59,17 +102,38 @@ export function LearningMapCanvas({ initialMap, editable = false }: { initialMap
     ]);
     setSelectedId(id);
   };
-  const save = () => {
-    const next = flowToMap(initialMap, nodes, edges);
-    setStoredMaps((current) => [...current.filter((map) => map.id !== next.id), next]);
-    setSaved(true);
-    window.setTimeout(() => setSaved(false), 1800);
-  };
+
   const fitView = () => flowRef.current?.fitView({ padding: 0.22 });
 
-  return <div className={`learning-map-shell ${editable ? "learning-map-editor" : ""}`}>
-    {editable && <MapToolbar onAdd={addBibble} onUndo={() => undefined} onRedo={() => undefined} onFit={fitView} onSave={save} saved={saved} />}
-    <div className="map-canvas-wrap">
+  const currentMap = flowToMap(initialMap, nodes, edges);
+  const progress = getMapProgress(currentMap);
+
+  return (
+     <main className={`map-page ${editable ? "learning-map-editor" : ""}`}>
+       {!editable && <MapHeader map={currentMap} onSave={() => saveMap()} saved={saved} />}
+       {!editable && (
+         <div className="map-page-copy">
+           <Link href="/explore" className="back-link">
+             <ArrowLeft size={15} /> All maps
+           </Link>
+           <p>{currentMap.description}</p>
+           <span>
+             {progress}% grown · {currentMap.bibbles.length} bibbles
+           </span>
+         </div>
+       )}
+       <div className={`learning-map-shell ${editable ? "learning-map-editor" : ""}`}>
+         {editable && (
+           <MapToolbar
+             onAdd={addBibble}
+             onUndo={() => undefined}
+             onRedo={() => undefined}
+             onFit={fitView}
+             onSave={() => saveMap()}
+             saved={saved}
+           />
+         )}
+         <div className="map-canvas-wrap">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -97,8 +161,10 @@ export function LearningMapCanvas({ initialMap, editable = false }: { initialMap
       </ReactFlow>
       {!editable && <div className="map-canvas-hint"><Star size={14} /> Click a bibble to explore it</div>}
     </div>
-    <AnimatePresence>{selected && <BibbleDetails bibble={selected} onClose={() => setSelectedId(null)} onChange={editable ? updateSelected : undefined} />}</AnimatePresence>
+    <AnimatePresence>{selected && <BibbleDetails key={selected.id} bibble={selected} onClose={() => setSelectedId(null)} onChange={updateSelected} onSave={saveMap} />}</AnimatePresence>
     {editable && selected && <button className="delete-bibble" onClick={() => { setNodes((current) => current.filter((node) => node.id !== selected.id)); setSelectedId(null); }}><Trash2 size={15} /> Delete bibble</button>}
     {editable && <div className="editor-back-link"><ArrowLeft size={15} /> <span>Changes are kept on this device</span></div>}
-  </div>;
+  </div>
+</main>
+);
 }

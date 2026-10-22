@@ -2,18 +2,34 @@
 
 import { ThemePicker } from "@/components/ui/theme-picker";
 import { useTheme } from "@/hooks/use-theme";
-import { ArrowLeft, Pencil, Sparkles } from "lucide-react";
+import type { LearningMap } from "@/types/map";
+import { ArrowLeft, Check, Pencil, Save, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 interface MapHeaderProps {
-  title: string;
-  category: string;
-  mapId: string;
+  map?: LearningMap;
+  title?: string;
+  category?: string;
+  mapId?: string;
   isEditing?: boolean;
+  onSave?: () => void;
+  saved?: boolean;
 }
 
-export function MapHeader({ title, category, mapId, isEditing = false }: MapHeaderProps) {
+export function MapHeader({
+  map,
+  title: titleProp,
+  category: categoryProp,
+  mapId: mapIdProp,
+  isEditing = false,
+  onSave,
+  saved = false,
+}: MapHeaderProps) {
   const { motif } = useTheme();
+
+  const title = map?.title ?? titleProp ?? "Learning map";
+  const category = map?.category ?? categoryProp ?? "";
+  const mapId = map?.id ?? mapIdProp ?? "";
 
   return (
     <header className="map-page-header">
@@ -31,8 +47,21 @@ export function MapHeader({ title, category, mapId, isEditing = false }: MapHead
         <h1>{isEditing ? `Editing: ${title}` : title}</h1>
       </div>
 
-      <div className="map-page-actions">
+      <div className="map-page-actions header-actions">
         <ThemePicker compact />
+
+        {!isEditing && onSave && (
+          <button
+            type="button"
+            className={`header-action-btn ${saved ? "saved" : ""}`}
+            onClick={onSave}
+            aria-label={saved ? "Map saved" : "Save map"}
+          >
+            {saved ? <Check size={15} /> : <Save size={15} />}
+            {saved ? "Map saved" : "Save Map"}
+          </button>
+        )}
+
         {isEditing ? (
           <Link href={`/map/${mapId}`} className="header-action">
             <ArrowLeft size={15} /> Back to map

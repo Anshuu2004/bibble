@@ -127,7 +127,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   color: var(--muted);
   font: 600 13px Arial, sans-serif;
 }
-.nav-cta, .header-action {
+.nav-cta, .header-action, .header-action-btn {
   display: inline-flex;
   gap: 7px;
   align-items: center;
@@ -137,8 +137,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   background: var(--card);
   color: var(--foreground);
   font: 700 12px Arial, sans-serif;
-  box-shadow: 0 2px 8px rgb(var(--shadow-color) / 0.05);
-  transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+  *box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: transform 0.15s ease, border-color 0.15s ease;
 }
 .nav-login, .nav-signup {
   display: inline-flex;
@@ -1148,12 +1148,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 /* 🍓 Strawberry Red Theme Plaid & Wallpaper */
 .room-roomscape,
 html[data-theme="strawberry-red"] .room-roomscape {
-  background-color: var(--wallpaper-bg);
-  background-image: 
-    linear-gradient(rgba(230, 25, 60, 0.16) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(230, 25, 60, 0.16) 2px, transparent 2px),
-    linear-gradient(rgba(255, 77, 109, 0.12) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(255, 77, 109, 0.12) 2px, transparent 2px);
+  background-color: #fce8ee;
+  background-image:
+    linear-gradient(rgba(240, 140, 165, 0.45) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(240, 140, 165, 0.45) 2px, transparent 2px),
+    linear-gradient(rgba(160, 210, 170, 0.38) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(160, 210, 170, 0.38) 2px, transparent 2px);
   background-size: 44px 44px, 44px 44px, 44px 44px, 44px 44px;
   background-position: 0 0, 0 0, 22px 22px, 22px 22px;
 }
@@ -1164,12 +1164,12 @@ html[data-theme="strawberry-red"] .room-roomscape::before {
 
 /* 🍏 Refreshing Green Theme Plaid & Wallpaper */
 html[data-theme="refreshing-green"] .room-roomscape {
-  background-color: var(--wallpaper-bg);
-  background-image: 
-    linear-gradient(rgba(5, 150, 105, 0.16) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(5, 150, 105, 0.16) 2px, transparent 2px),
-    linear-gradient(rgba(16, 185, 129, 0.12) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(16, 185, 129, 0.12) 2px, transparent 2px);
+  background-color: #e4f5e8;
+  background-image:
+    linear-gradient(rgba(130, 200, 155, 0.45) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(130, 200, 155, 0.45) 2px, transparent 2px),
+    linear-gradient(rgba(240, 180, 160, 0.38) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(240, 180, 160, 0.38) 2px, transparent 2px);
   background-size: 44px 44px, 44px 44px, 44px 44px, 44px 44px;
   background-position: 0 0, 0 0, 22px 22px, 22px 22px;
 }
@@ -1179,12 +1179,12 @@ html[data-theme="refreshing-green"] .room-roomscape::before {
 
 /* 🌺 Strawberry Lemonade Beach Theme Plaid & Wallpaper */
 html[data-theme="strawberry-lemonade"] .room-roomscape {
-  background-color: var(--wallpaper-bg);
-  background-image: 
-    linear-gradient(rgba(225, 29, 98, 0.15) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(225, 29, 98, 0.15) 2px, transparent 2px),
-    linear-gradient(rgba(245, 158, 11, 0.15) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(245, 158, 11, 0.15) 2px, transparent 2px);
+  background-color: #ffe9e0;
+  background-image:
+    linear-gradient(rgba(245, 160, 150, 0.45) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(245, 160, 150, 0.45) 2px, transparent 2px),
+    linear-gradient(rgba(245, 200, 120, 0.4) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(245, 200, 120, 0.4) 2px, transparent 2px);
   background-size: 44px 44px, 44px 44px, 44px 44px, 44px 44px;
   background-position: 0 0, 0 0, 22px 22px, 22px 22px;
 }
@@ -1195,7 +1195,7 @@ html[data-theme="strawberry-lemonade"] .room-roomscape::before {
 /* Dark mode roomscape wallpaper adaptations */
 html.dark[data-theme="strawberry-red"] .room-roomscape,
 html[data-theme="strawberry-red"].dark .room-roomscape {
-  background-image: 
+  background-image:
     linear-gradient(rgba(255, 45, 85, 0.18) 2px, transparent 2px),
     linear-gradient(90deg, rgba(255, 45, 85, 0.18) 2px, transparent 2px),
     linear-gradient(rgba(255, 117, 151, 0.12) 2px, transparent 2px),
@@ -1203,7 +1203,7 @@ html[data-theme="strawberry-red"].dark .room-roomscape {
 }
 html.dark[data-theme="refreshing-green"] .room-roomscape,
 html[data-theme="refreshing-green"].dark .room-roomscape {
-  background-image: 
+  background-image:
     linear-gradient(rgba(16, 185, 129, 0.18) 2px, transparent 2px),
     linear-gradient(90deg, rgba(16, 185, 129, 0.18) 2px, transparent 2px),
     linear-gradient(rgba(52, 211, 153, 0.12) 2px, transparent 2px),
@@ -1211,7 +1211,7 @@ html[data-theme="refreshing-green"].dark .room-roomscape {
 }
 html.dark[data-theme="strawberry-lemonade"] .room-roomscape,
 html[data-theme="strawberry-lemonade"].dark .room-roomscape {
-  background-image: 
+  background-image:
     linear-gradient(rgba(255, 42, 117, 0.18) 2px, transparent 2px),
     linear-gradient(90deg, rgba(255, 42, 117, 0.18) 2px, transparent 2px),
     linear-gradient(rgba(251, 191, 36, 0.15) 2px, transparent 2px),
@@ -1586,8 +1586,8 @@ html.dark .preview-window-line {
 .map-card h2 { margin: 10px 0 6px; font-size: 22px; font-weight: 500; letter-spacing: -.03em; color: var(--foreground); }
 .map-card p { min-height: 40px; margin: 0 0 16px; color: var(--muted); font-size: 14px; line-height: 1.45; }
 .map-card-footer { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
-.tiny-progress { flex: 1; height: 6px; overflow: hidden; border-radius: 99px; background: var(--border); }
-.tiny-progress span { display: block; height: 100%; border-radius: inherit; background: var(--primary); }
+.tiny-progress { flex: 1; min-width: 0; height: 6px; overflow: hidden; border-radius: 99px; background: var(--brand-soft); }
+.tiny-progress span { display: block; max-width: 100%; height: 100%; border-radius: inherit; background: var(--primary); transition: width 0.35s ease; }
 .round-link { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--primary); flex-shrink: 0; }
 
 /* Interactive Flow Canvas (/map/[id]) */
@@ -1600,7 +1600,35 @@ html.dark .preview-window-line {
 .toolbar-button { width: 36px; height: 36px; display: grid; place-items: center; color: var(--muted); background: transparent; border: 0; border-radius: 8px; cursor: pointer; }
 .toolbar-button:hover { background: var(--lavender); color: var(--primary); }
 .toolbar-save { padding: 8px 16px; border-radius: 99px; color: #fff; background: var(--primary); font: 700 12px Arial, sans-serif; border: 0; cursor: pointer; }
-.details-panel { position: absolute; z-index: 5; top: 20px; right: 20px; bottom: 20px; width: 330px; padding: 24px; overflow-y: auto; border: 1px solid var(--border); border-radius: 20px; background: var(--card); box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 14px; }
+.details-panel { position: absolute; z-index: 5; top: 20px; right: 20px; bottom: 20px; width: 330px; padding: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 20px; background: var(--card); box-shadow: var(--shadow); display: flex; flex-direction: column; }
+.details-panel-scroll { flex: 1; overflow-y: auto; padding: 24px 24px 0; display: flex; flex-direction: column; gap: 14px; }
+.details-panel-footer { padding: 12px 24px 20px; flex-shrink: 0; background: var(--card); border-top: 1px solid var(--border); }
+.details-unsaved-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--primary);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+}
+.details-saved-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 99px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+}
 .details-panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .details-panel-header h2 { margin: 4px 0 0; font-size: 20px; font-weight: 600; color: var(--foreground); line-height: 1.25; }
 .field-label { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 6px; }
@@ -1626,11 +1654,44 @@ html.dark .preview-window-line {
 .delete-bibble:hover { transform: translateY(-1px); border-color: var(--destructive); }
 .editor-back-link { position: absolute; top: 20px; left: 20px; z-index: 10; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 99px; background: var(--card); border: 1px solid var(--border); color: var(--muted); font-size: 12px; font-weight: 700; }
 
+/* ── Bibble Details: Save Changes button ── */
+.details-save-wrap { margin-top: 6px; }
+.details-save-btn {
+  width: 100%;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 14px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+.details-save-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px color-mix(in srgb, var(--primary) 45%, transparent); }
+.details-save-btn:active { transform: translateY(0); }
+.details-save-btn-saved {
+  background: #22c55e;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.35);
+  animation: save-pulse 0.4s ease;
+}
+@keyframes save-pulse {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
 /* Cute wallpaper pattern background for empty sections & preview cards */
 .cozy-wallpaper-pattern {
   position: relative;
   background-color: var(--wallpaper-bg, var(--surface-soft));
-  background-image: 
+  background-image:
     linear-gradient(color-mix(in srgb, var(--primary) 28%, transparent) 2px, transparent 2px),
     linear-gradient(90deg, color-mix(in srgb, var(--primary) 28%, transparent) 2px, transparent 2px),
     linear-gradient(color-mix(in srgb, var(--accent) 24%, transparent) 2px, transparent 2px),
@@ -1861,4 +1922,3 @@ html.dark[data-theme="strawberry-lemonade"] {
   --ring: var(--brand);
   --radius: .75rem;
 }
-
