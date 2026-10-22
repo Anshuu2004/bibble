@@ -1,41 +1,76 @@
 "use client";
 
-import { Pencil, Sparkles, Check, Save } from "lucide-react";
+import { ThemePicker } from "@/components/ui/theme-picker";
+import { useTheme } from "@/hooks/use-theme";
+import type { LearningMap } from "@/types/map";
+import { ArrowLeft, Check, Pencil, Save, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { LearningMap } from "@/types/map";
 
 interface MapHeaderProps {
-  map: LearningMap;
+  map?: LearningMap;
+  title?: string;
+  category?: string;
+  mapId?: string;
+  isEditing?: boolean;
   onSave?: () => void;
   saved?: boolean;
 }
 
-export function MapHeader({ map, onSave, saved }: MapHeaderProps) {
+export function MapHeader({
+  map,
+  title: titleProp,
+  category: categoryProp,
+  mapId: mapIdProp,
+  isEditing = false,
+  onSave,
+  saved = false,
+}: MapHeaderProps) {
+  const { motif } = useTheme();
+
+  const title = map?.title ?? titleProp ?? "Learning map";
+  const category = map?.category ?? categoryProp ?? "";
+  const mapId = map?.id ?? mapIdProp ?? "";
+
   return (
     <header className="map-page-header">
-      <Link href="/explore" className="brand">
-        <span className="brand-mark-emoji">🍓</span>
+      <Link href="/explore" className="brand" aria-label="Bibble explore">
+        <span className="brand-mark" aria-hidden="true">
+          {motif.brandEmoji}
+        </span>
         <span>Bibble</span>
       </Link>
+
       <div className="map-page-title">
         <span className="eyebrow">
-          {map.category} <Sparkles size={13} />
+          {category} <Sparkles size={13} />
         </span>
-        <h1>{map.title}</h1>
+        <h1>{isEditing ? `Editing: ${title}` : title}</h1>
       </div>
-      <div className="header-actions">
-        {onSave && (
+
+      <div className="map-page-actions header-actions">
+        <ThemePicker compact />
+
+        {!isEditing && onSave && (
           <button
+            type="button"
             className={`header-action-btn ${saved ? "saved" : ""}`}
             onClick={onSave}
+            aria-label={saved ? "Map saved" : "Save map"}
           >
             {saved ? <Check size={15} /> : <Save size={15} />}
             {saved ? "Map saved" : "Save Map"}
           </button>
         )}
-        <Link href={`/map/${map.id}/edit`} className="header-action">
-          <Pencil size={15} /> Edit map
-        </Link>
+
+        {isEditing ? (
+          <Link href={`/map/${mapId}`} className="header-action">
+            <ArrowLeft size={15} /> Back to map
+          </Link>
+        ) : (
+          <Link href={`/map/${mapId}/edit`} className="header-action">
+            <Pencil size={15} /> Edit map
+          </Link>
+        )}
       </div>
     </header>
   );

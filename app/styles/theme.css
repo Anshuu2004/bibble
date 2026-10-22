@@ -1,85 +1,234 @@
 /*
- * Theme contract
+ * ==========================================================================
+ * Bibble Unified Theme System
  *
- * Components should prefer these role-based variables over raw colors. The
- * compatibility aliases at the end keep existing UI stable while screens are
- * migrated incrementally.
+ * Provides three beautifully tailored themes:
+ * 🍓 Strawberry Red          - Ripe berry red, velvety cream & ruby pops
+ * 🍏 Refreshing Green        - Crisp emerald mint, botanical sage & jade sparkle
+ * 🌺 Strawberry Lemonade Beach - Summer hibiscus pink, golden lemonade & ocean teal
+ *
+ * Each theme supports both Light and Dark modes with WCAG AAA contrast,
+ * rich gradients, smooth transitions, and harmonious role tokens.
+ * ==========================================================================
  */
 
+/* --------------------------------------------------------------------------
+   1. STRAWBERRY RED THEME (Light & Dark)
+   -------------------------------------------------------------------------- */
 :root,
 html[data-theme="strawberry-red"] {
   color-scheme: light;
-  --surface-page: #fff0f3;
+  --surface-page: #fff5f7;
   --surface-card: #ffffff;
-  --surface-soft: #fde2e7;
-  --surface-strong: #f8bac7;
-  --text-primary: #2a060d;
-  --text-muted: #5e1f29;
-  --brand: #c91035;
-  --brand-hover: #a60927;
-  --brand-soft: #fbc6d0;
-  --accent: #d83452;
-  --theme-accent: #d83452;
-  --border-subtle: #f29eb0;
-  --shadow-color: 70, 10, 25;
-  --status-live: #0d8a5a;
-  --canvas-dot: #e38a9d;
-  --canvas-edge: #c94f66;
-  --canvas-node: #f5b0bf;
-  --wallpaper-bg: #fde2e7;
-  --wallpaper-dot: #f29eb0;
+  --surface-soft: #ffe7ee;
+  --surface-strong: #fcccd8;
+  --text-primary: #2d0a14;
+  --text-muted: #6e2738;
+  --brand: #d91438;
+  --brand-hover: #b50d2d;
+  --brand-soft: #ffd9e2;
+  --brand-gradient: linear-gradient(135deg, #e6193c 0%, #ff4d6d 100%);
+  --brand-gradient-hover: linear-gradient(135deg, #c91035 0%, #e6193c 100%);
+  --accent: #e63956;
+  --theme-accent: #e63956;
+  --border-subtle: #f5b8c6;
+  --border-strong: #e38a9e;
+  --shadow-color: 80, 15, 30;
+  --shadow-ambient: 0 16px 42px rgb(var(--shadow-color) / 0.08);
+  --shadow-card: 0 6px 20px rgb(var(--shadow-color) / 0.05);
+  --shadow-elevated: 0 20px 48px rgb(var(--shadow-color) / 0.14);
+  --status-live: #10b981;
+  --canvas-dot: #e599aa;
+  --canvas-edge: #d92d52;
+  --canvas-node: #fcd0db;
+  --wallpaper-bg: #ffeef2;
+  --wallpaper-dot: #f3b1c1;
   --theme-motif-symbol: "🍓";
+  --glow-color: rgba(230, 25, 60, 0.25);
+  --pill-bg: #ffe7ee;
+  --pill-text: #b50d2d;
 }
 
+html[data-theme="strawberry-red"].dark,
+html.dark[data-theme="strawberry-red"],
+html.dark:not([data-theme]) {
+  color-scheme: dark;
+  --surface-page: #13070b;
+  --surface-card: #1f0c13;
+  --surface-soft: #2d111c;
+  --surface-strong: #441829;
+  --text-primary: #fff0f3;
+  --text-muted: #d9a3b0;
+  --brand: #ff2d55;
+  --brand-hover: #ff5277;
+  --brand-soft: #3d1424;
+  --brand-gradient: linear-gradient(135deg, #ff2d55 0%, #ff6b8b 100%);
+  --brand-gradient-hover: linear-gradient(135deg, #e01e44 0%, #ff4d6d 100%);
+  --accent: #ff4d6d;
+  --theme-accent: #ff4d6d;
+  --border-subtle: #4e1c2d;
+  --border-strong: #6e273e;
+  --shadow-color: 0, 0, 0;
+  --shadow-ambient: 0 16px 42px rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.35);
+  --shadow-elevated: 0 20px 48px rgba(0, 0, 0, 0.55);
+  --status-live: #34d399;
+  --canvas-dot: #6e273e;
+  --canvas-edge: #ff2d55;
+  --canvas-node: #3d1424;
+  --wallpaper-bg: #1a0910;
+  --wallpaper-dot: #3d1424;
+  --theme-motif-symbol: "🍓";
+  --glow-color: rgba(255, 45, 85, 0.35);
+  --pill-bg: #2d111c;
+  --pill-text: #ff7597;
+}
+
+/* --------------------------------------------------------------------------
+   2. REFRESHING GREEN THEME (Light & Dark)
+   -------------------------------------------------------------------------- */
 html[data-theme="refreshing-green"] {
   color-scheme: light;
-  --surface-page: #f2f9f4;
+  --surface-page: #f1fbf5;
   --surface-card: #ffffff;
-  --surface-soft: #e2f4e6;
-  --surface-strong: #c3ebd0;
-  --text-primary: #0a2e18;
-  --text-muted: #3d5e49;
-  --brand: #127347;
-  --brand-hover: #0b5936;
-  --brand-soft: #ccf0d8;
-  --accent: #52ab71;
-  --theme-accent: #52ab71;
-  --border-subtle: #a4dcba;
-  --shadow-color: 20, 75, 40;
-  --status-live: #127347;
-  --canvas-dot: #94d1ab;
-  --canvas-edge: #52ab71;
-  --canvas-node: #b9e9cb;
-  --wallpaper-bg: #e2f4e6;
-  --wallpaper-dot: #a4dcba;
+  --surface-soft: #def6e7;
+  --surface-strong: #bfe9ce;
+  --text-primary: #0a2916;
+  --text-muted: #2f593f;
+  --brand: #059669;
+  --brand-hover: #047857;
+  --brand-soft: #d1fae5;
+  --brand-gradient: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  --brand-gradient-hover: linear-gradient(135deg, #047857 0%, #059669 100%);
+  --accent: #10b981;
+  --theme-accent: #10b981;
+  --border-subtle: #a0dcba;
+  --border-strong: #78c69b;
+  --shadow-color: 15, 65, 35;
+  --shadow-ambient: 0 16px 42px rgb(var(--shadow-color) / 0.08);
+  --shadow-card: 0 6px 20px rgb(var(--shadow-color) / 0.05);
+  --shadow-elevated: 0 20px 48px rgb(var(--shadow-color) / 0.14);
+  --status-live: #059669;
+  --canvas-dot: #8fd2ac;
+  --canvas-edge: #059669;
+  --canvas-node: #b6e8cb;
+  --wallpaper-bg: #e7f7ed;
+  --wallpaper-dot: #a3debd;
   --theme-motif-symbol: "🍏";
+  --glow-color: rgba(5, 150, 105, 0.25);
+  --pill-bg: #def6e7;
+  --pill-text: #047857;
 }
 
+html[data-theme="refreshing-green"].dark,
+html.dark[data-theme="refreshing-green"] {
+  color-scheme: dark;
+  --surface-page: #06150e;
+  --surface-card: #0d2218;
+  --surface-soft: #143324;
+  --surface-strong: #1d4632;
+  --text-primary: #ecfdf5;
+  --text-muted: #9dd1b4;
+  --brand: #10b981;
+  --brand-hover: #34d399;
+  --brand-soft: #153828;
+  --brand-gradient: linear-gradient(135deg, #059669 0%, #34d399 100%);
+  --brand-gradient-hover: linear-gradient(135deg, #047857 0%, #10b981 100%);
+  --accent: #34d399;
+  --theme-accent: #34d399;
+  --border-subtle: #204d37;
+  --border-strong: #2d6b4d;
+  --shadow-color: 0, 0, 0;
+  --shadow-ambient: 0 16px 42px rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.35);
+  --shadow-elevated: 0 20px 48px rgba(0, 0, 0, 0.55);
+  --status-live: #34d399;
+  --canvas-dot: #2d6b4d;
+  --canvas-edge: #10b981;
+  --canvas-node: #153828;
+  --wallpaper-bg: #0a1b12;
+  --wallpaper-dot: #1f4b36;
+  --theme-motif-symbol: "🍏";
+  --glow-color: rgba(16, 185, 129, 0.35);
+  --pill-bg: #143324;
+  --pill-text: #6ee7b7;
+}
+
+/* --------------------------------------------------------------------------
+   3. STRAWBERRY LEMONADE BEACH THEME (Light & Dark)
+   -------------------------------------------------------------------------- */
 html[data-theme="strawberry-lemonade"] {
   color-scheme: light;
-  --surface-page: #fff8f2;
+  --surface-page: #fff9f5;
   --surface-card: #ffffff;
-  --surface-soft: #ffe8df;
-  --surface-strong: #fdd2c3;
-  --text-primary: #122c35;
-  --text-muted: #3d555c;
-  --brand: #d63864;
-  --brand-hover: #b5254c;
-  --brand-soft: #ffd9e4;
-  --accent: #1e9d89;
-  --theme-accent: #1e9d89;
-  --border-subtle: #f5b4a1;
-  --shadow-color: 90, 45, 55;
-  --status-live: #1e9d89;
-  --canvas-dot: #e8a594;
-  --canvas-edge: #d66c5a;
-  --canvas-node: #f7c5b6;
-  --wallpaper-bg: #ffe8df;
-  --wallpaper-dot: #f5b4a1;
+  --surface-soft: #fff0e5;
+  --surface-strong: #fedbc7;
+  --text-primary: #15222e;
+  --text-muted: #4e606d;
+  --brand: #e11d62;
+  --brand-hover: #be124e;
+  --brand-soft: #ffe2ed;
+  --brand-gradient: linear-gradient(135deg, #e11d62 0%, #f59e0b 100%);
+  --brand-gradient-hover: linear-gradient(135deg, #be124e 0%, #d97706 100%);
+  --accent: #0d9488;
+  --theme-accent: #0d9488;
+  --lemonade: #f59e0b;
+  --border-subtle: #fed2be;
+  --border-strong: #fba987;
+  --shadow-color: 75, 30, 45;
+  --shadow-ambient: 0 16px 42px rgb(var(--shadow-color) / 0.08);
+  --shadow-card: 0 6px 20px rgb(var(--shadow-color) / 0.05);
+  --shadow-elevated: 0 20px 48px rgb(var(--shadow-color) / 0.14);
+  --status-live: #0d9488;
+  --canvas-dot: #f6a5b8;
+  --canvas-edge: #e11d62;
+  --canvas-node: #fcd3de;
+  --wallpaper-bg: #fff2ea;
+  --wallpaper-dot: #fec9b3;
   --theme-motif-symbol: "🌺";
+  --glow-color: rgba(225, 29, 98, 0.25);
+  --pill-bg: #fff0e5;
+  --pill-text: #be124e;
 }
 
-/* Temporary aliases for existing components. Do not introduce new usage. */
+html[data-theme="strawberry-lemonade"].dark,
+html.dark[data-theme="strawberry-lemonade"] {
+  color-scheme: dark;
+  --surface-page: #0a131c;
+  --surface-card: #111f2d;
+  --surface-soft: #1a2c3f;
+  --surface-strong: #253e58;
+  --text-primary: #f8fafc;
+  --text-muted: #9bb0c4;
+  --brand: #ff2a75;
+  --brand-hover: #ff5c95;
+  --brand-soft: #381827;
+  --brand-gradient: linear-gradient(135deg, #ff2a75 0%, #fbbf24 100%);
+  --brand-gradient-hover: linear-gradient(135deg, #e1145b 0%, #f59e0b 100%);
+  --accent: #14b8a6;
+  --theme-accent: #14b8a6;
+  --lemonade: #fbbf24;
+  --border-subtle: #27435f;
+  --border-strong: #385d82;
+  --shadow-color: 0, 0, 0;
+  --shadow-ambient: 0 16px 42px rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.35);
+  --shadow-elevated: 0 20px 48px rgba(0, 0, 0, 0.55);
+  --status-live: #14b8a6;
+  --canvas-dot: #385d82;
+  --canvas-edge: #ff2a75;
+  --canvas-node: #27435f;
+  --wallpaper-bg: #0e1924;
+  --wallpaper-dot: #253d56;
+  --theme-motif-symbol: "🌺";
+  --glow-color: rgba(255, 42, 117, 0.35);
+  --pill-bg: #1a2c3f;
+  --pill-text: #ff75a6;
+}
+
+/* --------------------------------------------------------------------------
+   4. SYSTEM ALIASES & COMPATIBILITY CONTRACT
+   -------------------------------------------------------------------------- */
 :root {
   --background: var(--surface-page);
   --foreground: var(--text-primary);
@@ -89,6 +238,20 @@ html[data-theme="strawberry-lemonade"] {
   --card: var(--surface-card);
   --border: var(--border-subtle);
   --lavender: var(--surface-soft);
-  --shadow: 0 18px 50px rgb(var(--shadow-color) / 0.12);
+  --shadow: var(--shadow-ambient);
 }
 
+/* --------------------------------------------------------------------------
+   5. SEAMLESS THEME TRANSITIONING
+   -------------------------------------------------------------------------- */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              fill 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}

@@ -1,5 +1,7 @@
 "use client";
 
+import { ThemePicker } from "@/components/ui/theme-picker";
+import { useTheme } from "@/hooks/use-theme";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
@@ -10,6 +12,7 @@ type AuthMode = "login" | "signup";
 const accountKey = "bibble-account";
 
 export function AuthForm({ mode }: { mode: AuthMode }) {
+  const { motif } = useTheme();
   const isSignup = mode === "signup";
   const [message, setMessage] = useState("");
 
@@ -33,8 +36,14 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <Link href="/" className="brand"><span className="brand-mark">🍓</span><span>Bibble</span></Link>
-        <Link href="/" className={styles.back}>Keep browsing <ArrowRight size={15} /></Link>
+        <Link href="/" className="brand">
+          <span className="brand-mark">{motif.brandEmoji}</span>
+          <span>Bibble</span>
+        </Link>
+        <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+          <ThemePicker compact />
+          <Link href="/" className={styles.back}>Keep browsing <ArrowRight size={15} /></Link>
+        </div>
       </header>
       <section className={styles.shell} aria-labelledby="auth-title">
         <span className={`eyebrow ${styles.eyebrow}`}><Sparkles size={14} /> Your little learning corner</span>

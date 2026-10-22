@@ -29,6 +29,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn("h-full", "antialiased", nunito.variable, display.variable, "font-sans", geist.variable)}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){
+              try {
+                var t = localStorage.getItem('bibble-theme');
+                if (t) document.documentElement.dataset.theme = t;
+                var m = localStorage.getItem('bibble-theme-mode');
+                if (m === 'dark' || (!m && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark');
+                  document.documentElement.dataset.themeMode = 'dark';
+                }
+              } catch(e) {}
+            })();`,
+          }}
+        />
+      </head>
       <body className="min-h-full" suppressHydrationWarning>
         {children}
       </body>
