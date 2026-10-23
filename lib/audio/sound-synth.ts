@@ -739,6 +739,7 @@ function buildCafe(bag: SoundBag): void {
 // seamless loops.
 // ---------------------------------------------------------------------------
 
+const MINECRAFT_LOOP_URL = "/audio/minecraft-loop.mp3";
 const NATURE_LOOP_URL = "/audio/nature-loop.mp3";
 
 const musicBufferCache = new Map<string, Promise<AudioBuffer>>();
@@ -862,174 +863,6 @@ function buildFileLoop(url: string): (bag: SoundBag) => Promise<void> {
 }
 
 // ---------------------------------------------------------------------------
-// Minecraft — peaceful rainy nighttime atmosphere: soft rain, gentle wind, a
-// dreamy drifting pad and extremely rare chimes. Fully synthesized, no
-// recorded audio.
-// ---------------------------------------------------------------------------
-
-const CHIME_NOTES = [392, 440, 523.25, 587.33, 659.25, 783.99];
-
-function playChime(bag: SoundBag): void {
-  const context = bag.context;
-  const t = context.currentTime + 0.06;
-  const base =
-    CHIME_NOTES[Math.floor(Math.random() * CHIME_NOTES.length)] *
-    (Math.random() < 0.3 ? 2 : 1);
-  const filter = createFilter(bag, "lowpass", randomBetween(2000, 3000), 0.35, true);
-  const panner = createPanner(bag, randomBetween(-0.4, 0.4), true);
-  const nodes: AudioNode[] = [];
-  const sources: AudioScheduledSourceNode[] = [];
-  filter.connect(panner).connect(bag.input);
-  nodes.push(filter, panner);
-
-  const partials: Array<{
-    ratio: number;
-    level: number;
-    decay: number;
-    type: OscillatorType;
-  }> = [
-    { ratio: 1, level: randomBetween(0.012, 0.018), decay: randomBetween(4, 6.5), type: "sine" },
-    { ratio: 2.004, level: 0.005, decay: randomBetween(2.4, 3.6), type: "sine" },
-    { ratio: 2.98, level: 0.002, decay: randomBetween(1.6, 2.4), type: "triangle" },
-  ];
-
-  for (const partial of partials) {
-    const osc = context.createOscillator();
-    const gain = createGain(bag, 0, true);
-    osc.type = partial.type;
-    osc.frequency.value = base * partial.ratio;
-    osc.detune.value = randomBetween(-5, 5);
-    const attack = randomBetween(0.02, 0.06);
-    gain.gain.setValueAtTime(MIN_GAIN, t);
-    gain.gain.exponentialRampToValueAtTime(partial.level, t + attack);
-    gain.gain.exponentialRampToValueAtTime(MIN_GAIN, t + attack + partial.decay);
-    osc.connect(gain).connect(filter);
-    osc.start(t);
-    osc.stop(t + attack + partial.decay + 0.1);
-    sources.push(osc);
-    nodes.push(osc, gain);
-  }
-
-  finalizeOneShot(bag, sources, nodes);
-}
-
-function buildMinecraft(bag: SoundBag): void {
-  // Rain heard from inside: softer and more distant than the dedicated Rain bed.
-  const rain = startNoiseLayer(
-    bag,
-    "pink",
-    [
-      { type: "highpass", frequency: 120, q: 0.6 },
-      { type: "lowpass", frequency: 900, q: 0.5 },
-    ],
-    0.2
-  );
-  addSlowLfo(bag, rain.gain.gain, 0.029, 0.035);
-  addSlowLfo(bag, rain.filters[1].frequency, 0.037, 120);
-  addSlowLfo(bag, rain.panner.pan, 0.013, 0.06);
-
-  const fineRain = startNoiseLayer(
-    bag,
-    "pink",
-    [
-      { type: "highpass", frequency: 1800, q: 0.6 },
-      { type: "lowpass", frequency: 5200, q: 0.4 },
-    ],
-    0.04,
-    -0.08
-  );
-  addSlowLfo(bag, fineRain.gain.gain, 0.047, 0.012);
-
-  const distance = startNoiseLayer(
-    bag,
-    "brown",
-    [{ type: "lowpass", frequency: 170, q: 0.7 }],
-    0.06
-  );
-  addSlowLfo(bag, distance.gain.gain, 0.017, 0.018);
-
-  // Subtle wind under the rain.
-  const wind = startNoiseLayer(
-    bag,
-    "brown",
-    [{ type: "lowpass", frequency: 220, q: 0.5 }],
-    0.045,
-    0.18,
-    0.96
-  );
-  addSlowLfo(bag, wind.filters[0].frequency, 0.027, 60);
-  addSlowLfo(bag, wind.gain.gain, 0.021, 0.014);
-  addSlowLfo(bag, wind.panner.pan, 0.015, 0.18);
-
-  // A small, distant stream.
-  const water = startNoiseLayer(
-    bag,
-    "pink",
-    [
-      { type: "bandpass", frequency: 560, q: 0.7 },
-      { type: "lowpass", frequency: 2400, q: 0.5 },
-    ],
-    0.026,
-    -0.24
-  );
-  addSlowLfo(bag, water.filters[0].frequency, 0.061, 90);
-  addSlowLfo(bag, water.gain.gain, 0.093, 0.008);
-
-  // Dreamy pad: open fifths and a ninth, drifting very slowly.
-  const padFilter = createFilter(bag, "lowpass", 620, 0.35);
-  padFilter.connect(bag.input);
-  addSlowLfo(bag, padFilter.frequency, 0.009, 110);
-
-  const padVoices: Array<{
-    frequency: number;
-    type: OscillatorType;
-    level: number;
-    pan: number;
-    swellRate: number;
-  }> = [
-    { frequency: 110, type: "sine", level: 0.022, pan: -0.22, swellRate: 0.007 },
-    { frequency: 164.81, type: "triangle", level: 0.014, pan: 0.28, swellRate: 0.01 },
-    { frequency: 220, type: "sine", level: 0.01, pan: -0.1, swellRate: 0.012 },
-    { frequency: 246.94, type: "sine", level: 0.007, pan: 0.18, swellRate: 0.008 },
-    { frequency: 329.63, type: "triangle", level: 0.005, pan: -0.3, swellRate: 0.011 },
-  ];
-
-  for (const voice of padVoices) {
-    const osc = bag.context.createOscillator();
-    const gain = createGain(bag, voice.level);
-    const panner = createPanner(bag, voice.pan);
-    osc.type = voice.type;
-    osc.frequency.value = voice.frequency;
-    osc.detune.value = randomBetween(-5, 5);
-    trackSource(bag, osc);
-    addSlowLfo(bag, osc.detune, 0.004 + Math.random() * 0.003, 3);
-    addSlowLfo(bag, gain.gain, voice.swellRate, voice.level * 0.6);
-    addSlowLfo(bag, panner.pan, 0.003 + Math.random() * 0.003, 0.1);
-    osc.connect(gain).connect(panner).connect(padFilter);
-    osc.start();
-  }
-
-  // Very rare chimes: a single, long, quiet tone; never a repeating figure.
-  let firstChime = true;
-  scheduleRepeating(
-    bag,
-    () => {
-      const delay = firstChime
-        ? randomBetween(9000, 20000)
-        : randomBetween(20000, 60000);
-      firstChime = false;
-      return delay;
-    },
-    () => playChime(bag)
-  );
-
-  // Occasional soft droplets over the distant rain.
-  scheduleEvent(bag, 1400, 4200, () => {
-    playRainDrop(bag, 0.007);
-  });
-}
-
-// ---------------------------------------------------------------------------
 // Soundscape profiles and entry point
 // ---------------------------------------------------------------------------
 
@@ -1052,7 +885,7 @@ const PROFILES: Record<Exclude<Soundscape, "off">, SoundscapeProfile> = {
     fadeOutSeconds: 1.6,
     reverbWet: 0.12,
     trim: 1.23,
-    build: buildMinecraft,
+    build: buildFileLoop(MINECRAFT_LOOP_URL),
   },
   nature: {
     fadeInSeconds: 2.5,
