@@ -8,16 +8,16 @@ import { ThemePicker } from "@/components/ui/theme-picker";
 import { useFocusTimer } from "@/hooks/use-focus-timer";
 import { useTheme } from "@/hooks/use-theme";
 import type { StudyRoom } from "@/types/room";
+import { recordFocusSession } from "@/lib/progress";
 import { ArrowLeft, Bell, Headphones, Sparkles, Users } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 const initialPeople = ["Mina", "Noah", "Leah", "Ari"];
 
 export function StudyRoomShell({ room }: { room: StudyRoom }) {
   const { motif } = useTheme();
-  const { active, formattedTime, toggleTimer } = useFocusTimer(room.minutes);
 
   const [joined, setJoined] = useState(false);
   const [note, setNote] = useState("");
@@ -30,9 +30,30 @@ export function StudyRoomShell({ room }: { room: StudyRoom }) {
   const [catHearts, setCatHearts] = useState<number>(0);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  const triggerToast = (msg: string) => {
+  const triggerToast = useCallback((msg: string) => {
     setToastMessage(msg);
     window.setTimeout(() => setToastMessage(null), 3000);
+  }, []);
+
+  const handleSessionComplete = useCallback(() => {
+    recordFocusSession({
+      minutes: room.minutes,
+      roomId: room.id,
+      roomName: room.name,
+      topic: room.topic,
+      completedAt: new Date().toISOString(),
+    });
+    triggerToast(`🎉 Completed a ${room.minutes}-min session in ${room.name}! Logged to My Progress.`);
+  }, [room, triggerToast]);
+
+  const { active, formattedTime, toggleTimer, resetTimer, isCompleted, setIsCompleted } = useFocusTimer(
+    room.minutes,
+    handleSessionComplete
+  );
+
+  const handleManualComplete = () => {
+    handleSessionComplete();
+    setIsCompleted(true);
   };
 
   const petCat = () => {
@@ -126,6 +147,9 @@ export function StudyRoomShell({ room }: { room: StudyRoom }) {
             formattedTime={formattedTime}
             active={active}
             onToggleActive={toggleTimer}
+            onCompleteEarly={handleManualComplete}
+            onReset={resetTimer}
+            isCompleted={isCompleted}
           />
         </section>
 

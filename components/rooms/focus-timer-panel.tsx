@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock3, Pause, Play } from "lucide-react";
+import { CheckCircle2, Clock3, Pause, Play, RotateCcw } from "lucide-react";
 import { motion } from "motion/react";
 
 interface FocusTimerPanelProps {
@@ -8,6 +8,9 @@ interface FocusTimerPanelProps {
   formattedTime: string;
   active: boolean;
   onToggleActive: () => void;
+  onCompleteEarly?: () => void;
+  onReset?: () => void;
+  isCompleted?: boolean;
 }
 
 export function FocusTimerPanel({
@@ -15,6 +18,9 @@ export function FocusTimerPanel({
   formattedTime,
   active,
   onToggleActive,
+  onCompleteEarly,
+  onReset,
+  isCompleted = false,
 }: FocusTimerPanelProps) {
   return (
     <div className="focus-panel">
@@ -31,19 +37,65 @@ export function FocusTimerPanel({
         >
           {formattedTime}
         </motion.span>
-        <small>{active ? "✨ The room is in focus mode" : "Ready when you are"}</small>
+        <small>
+          {isCompleted
+            ? "🎉 Session completed & logged to your progress!"
+            : active
+            ? "✨ The room is in focus mode"
+            : "Ready when you are"}
+        </small>
       </div>
-      <button className="focus-button" onClick={onToggleActive}>
-        {active ? (
-          <>
-            <Pause size={17} /> Pause focus
-          </>
-        ) : (
-          <>
-            <Play size={17} /> Start focus session
-          </>
+      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center", width: "100%" }}>
+        <button
+          className="focus-button"
+          onClick={onToggleActive}
+          style={{ flex: 1, minWidth: "160px" }}
+        >
+          {isCompleted ? (
+            <>
+              <Play size={17} /> Start new session
+            </>
+          ) : active ? (
+            <>
+              <Pause size={17} /> Pause focus
+            </>
+          ) : (
+            <>
+              <Play size={17} /> Start focus session
+            </>
+          )}
+        </button>
+
+        {onCompleteEarly && (
+          <button
+            type="button"
+            className="focus-button"
+            onClick={onCompleteEarly}
+            style={{
+              background: "var(--surface-soft)",
+              color: "var(--primary)",
+              border: "1.5px solid var(--border-subtle)",
+              cursor: "pointer",
+            }}
+            title="Mark session complete and record minutes in your progress"
+          >
+            <CheckCircle2 size={17} /> Complete &amp; log
+          </button>
         )}
-      </button>
+
+        {onReset && (
+          <button
+            type="button"
+            onClick={onReset}
+            className="room-icon-button"
+            title="Reset timer"
+            aria-label="Reset timer"
+            style={{ width: "42px", height: "42px", alignSelf: "center" }}
+          >
+            <RotateCcw size={16} />
+          </button>
+        )}
+      </div>
     </div>
   );
 }
