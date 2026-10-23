@@ -443,6 +443,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   background: var(--card);
   box-shadow: var(--shadow);
   align-items: center;
+  min-width: 0;
 }
 .hero-copy h1 { max-width: 540px; margin: 18px 0; font-size: clamp(40px, 4.5vw, 62px); line-height: 1.04; font-weight: 500; letter-spacing: -.05em; color: var(--foreground); }
 .hero-copy h1 em { color: var(--primary); font-style: italic; }
@@ -1811,6 +1812,26 @@ html[data-theme="strawberry-lemonade"] .cozy-wallpaper-pattern::before {
   .map-grid { grid-template-columns: 1fr; }
   .room-card { grid-template-columns: 1fr; }
   .room-card-art { min-height: 180px; }
+    .hero-study-section {
+    width: calc(100% - 32px);
+    padding: 20px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .hero-copy {
+    min-width: 0;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(30px, 8vw, 40px);
+    overflow-wrap: break-word;
+  }
+
+  .hero-copy p {
+    font-size: 16px;
+    overflow-wrap: break-word;
+  }
 }
 
 :root {
