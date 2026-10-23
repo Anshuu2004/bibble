@@ -1943,3 +1943,239 @@ html.dark[data-theme="strawberry-lemonade"] {
   --ring: var(--brand);
   --radius: .75rem;
 }
+
+/* ==========================================================================
+   8. ERROR PAGES (404, OFFLINE, SERVER ERROR)
+   ========================================================================== */
+.not-found-page,
+.error-page {
+  min-height: 100vh;
+  background: var(--background);
+  overflow-x: clip;
+}
+
+.not-found-main,
+.error-main {
+  position: relative;
+  min-height: calc(100vh - 84px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+/* Error page without header (for offline/server errors shown by provider) */
+.error-page > .not-found-main {
+  min-height: 100vh;
+}
+
+.not-found-content,
+.error-content {
+  position: relative;
+  text-align: center;
+  max-width: 580px;
+  width: 100%;
+}
+
+/* Floating decorative elements */
+.decoration {
+  position: absolute;
+  font-size: 48px;
+  line-height: 1;
+  opacity: 0.5;
+  filter: blur(0.5px);
+  animation: floatDecoration 6s ease-in-out infinite;
+}
+
+.decoration-1 {
+  top: -40px;
+  left: -30px;
+  animation-delay: 0s;
+}
+
+.decoration-2 {
+  top: 20%;
+  right: -40px;
+  font-size: 36px;
+  animation-delay: 1s;
+}
+
+.decoration-3 {
+  bottom: 15%;
+  left: -20px;
+  font-size: 32px;
+  animation-delay: 2s;
+}
+
+@keyframes floatDecoration {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(5deg);
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .decoration {
+    animation: none;
+  }
+}
+
+/* Error icon for offline/server errors */
+.error-icon {
+  font-size: 64px;
+  color: var(--primary);
+  margin-bottom: 24px;
+  text-shadow: 0 0 60px var(--glow-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Large number for 404 */
+.not-found-404,
+.error-large-number {
+  font-size: clamp(120px, 20vw, 180px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.08em;
+  color: var(--primary);
+  margin-bottom: 24px;
+  text-shadow: 0 0 60px var(--glow-color);
+}
+
+/* Heading */
+.not-found-heading,
+.error-heading {
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  color: var(--foreground);
+  margin: 0 0 16px;
+}
+
+/* Description */
+.not-found-description,
+.error-description {
+  font-size: clamp(15px, 2.5vw, 17px);
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0 0 20px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Subtext */
+.not-found-subtext,
+.error-subtext {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 32px;
+  font-weight: 600;
+}
+
+/* Action buttons */
+.not-found-actions,
+.error-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.button-large {
+  min-height: 52px;
+  padding: 0 28px;
+  font-size: 14px;
+  border-radius: 99px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.2s ease,
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              color 0.2s ease,
+              filter 0.2s ease;
+}
+
+.button-large.button-primary {
+  color: #fff;
+  background: var(--brand-gradient, var(--primary));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28),
+              0 4px 14px rgb(var(--shadow-color) / 0.18);
+  border: 0;
+}
+
+.button-large.button-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35),
+              0 8px 24px rgb(var(--shadow-color) / 0.28);
+}
+
+.button-large.button-primary:active {
+  transform: translateY(0px) scale(0.98);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15),
+              0 2px 8px rgb(var(--shadow-color) / 0.2);
+}
+
+.button-large.button-secondary {
+  color: var(--foreground);
+  border: 1.5px solid var(--border-subtle);
+  background: var(--card);
+  box-shadow: 0 2px 8px rgb(var(--shadow-color) / 0.04);
+}
+
+.button-large.button-secondary:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  background: var(--surface-soft);
+  color: var(--primary);
+  box-shadow: 0 6px 18px rgb(var(--shadow-color) / 0.08);
+}
+
+.button-large.button-secondary:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+/* Responsive breakpoints for error pages */
+@media (min-width: 650px) {
+  .not-found-actions,
+  .error-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 650px) {
+  .not-found-main,
+  .error-main {
+    padding: 32px 20px;
+  }
+
+  .decoration-1 {
+    top: -30px;
+    left: -20px;
+    font-size: 36px;
+  }
+
+  .decoration-2 {
+    top: 15%;
+    right: -25px;
+    font-size: 28px;
+  }
+
+  .decoration-3 {
+    bottom: 10%;
+    left: -15px;
+    font-size: 24px;
+  }
+}

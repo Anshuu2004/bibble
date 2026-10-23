@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { DM_Serif_Display, Nunito, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { OfflineProvider } from "@/components/error/offline-provider";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -47,7 +48,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="min-h-full" suppressHydrationWarning>
-        {children}
+        <OfflineProvider>
+          {children}
+        </OfflineProvider>
       </body>
     </html>
   );
