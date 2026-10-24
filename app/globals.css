@@ -1616,7 +1616,9 @@ html.dark .preview-window-line {
 .round-link { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--primary); flex-shrink: 0; }
 
 /* Interactive Flow Canvas (/map/[id]) */
-.map-page { height: 100vh; display: flex; flex-direction: column; overflow: hidden; background: var(--background); }
+.map-page { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--background); }
+/* The edit route nests the canvas's .map-page under a header-owning .map-page */
+.map-page .map-page { flex: 1; height: auto; min-height: 0; }
 .map-page-header { min-height: 78px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; border-bottom: 1px solid var(--border); background: var(--card); }
 .header-action { padding: 9px 15px; border: 1px solid var(--border); border-radius: 99px; font: 700 12px Arial, sans-serif; background: var(--card); color: var(--foreground); }
 .learning-map-shell .react-flow { background: var(--background); }
@@ -1635,6 +1637,11 @@ html.dark .preview-window-line {
   --xy-minimap-node-background-color: var(--canvas-node);
 }
 
+.map-canvas-wrap .react-flow__controls,
+.map-canvas-wrap .react-flow__minimap {
+  margin: 16px;
+}
+
 .map-canvas-wrap .react-flow__controls {
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
@@ -1643,6 +1650,12 @@ html.dark .preview-window-line {
 
 .map-canvas-wrap .react-flow__controls-button:active {
   background: var(--surface-strong);
+}
+
+/* Inset so the rounded, clipped container doesn't hide the focus ring */
+.map-canvas-wrap .react-flow__controls-button:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: -2px;
 }
 
 .map-canvas-wrap .react-flow__minimap {
@@ -1814,24 +1827,21 @@ html[data-theme="strawberry-lemonade"] .cozy-wallpaper-pattern::before {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 78px);
-}
-.learning-map-editor {
-  min-height: calc(100vh - 78px);
+  min-height: 0;
 }
 .map-canvas-wrap {
   position: relative;
   width: 100%;
   height: 100%;
   flex: 1;
-  min-height: 500px;
+  min-height: 0;
   display: flex;
   flex-direction: column;
 }
 .map-canvas-hint {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
+  top: 16px;
+  left: 16px;
   z-index: 10;
   display: inline-flex;
   align-items: center;
