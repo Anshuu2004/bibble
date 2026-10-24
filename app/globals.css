@@ -1128,7 +1128,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 .room-roomscape {
   position: relative;
-  height: 286px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(176px, 32%, 250px);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "label  window"
+    "focus  window"
+    "desk   desk";
+  column-gap: 20px;
+  min-height: 286px;
+  padding: 18px 22px 0;
   overflow: hidden;
   border-radius: 24px;
   border: 1px solid var(--border);
@@ -1223,9 +1232,9 @@ html.dark .room-roomscape::before {
 }
 
 .room-roomscape-label {
-  position: absolute;
-  top: 18px;
-  left: 20px;
+  grid-area: label;
+  justify-self: start;
+  align-self: start;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -1239,15 +1248,14 @@ html.dark .room-roomscape::before {
   box-shadow: 0 4px 12px rgba(0,0,0,0.04);
 }
 .room-focus-board {
-  position: absolute;
-  top: 82px;
-  left: 28px;
-  z-index: 2;
-  width: min(48%, 310px);
+  grid-area: focus;
+  align-self: end;
+  margin: 14px 0 18px;
+  max-width: 440px;
   padding: 17px 18px;
   border: 1px solid color-mix(in srgb, var(--border) 72%, white);
   border-radius: 16px;
-  background: color-mix(in srgb, var(--card) 88%, transparent);
+  background: color-mix(in srgb, var(--card) 95%, transparent);
   box-shadow: 0 10px 24px rgb(var(--shadow-color) / .08);
 }
 .room-focus-board > span { display: block; color: var(--primary); font: 800 10px Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
@@ -1266,21 +1274,20 @@ html.dark .room-roomscape::before {
   font-size: 10px;
 }
 .room-roomscape-window {
-  position: absolute;
-  top: 24px;
-  right: 34px;
-  width: 206px;
-  height: 170px;
+  grid-area: window;
+  margin-bottom: 18px;
+  min-height: 150px;
   border-radius: 16px;
   border: 4px solid var(--card);
   overflow: hidden;
   background: #e0f2fe;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.08);
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.08), 0 5px 0 -1px var(--border), 0 10px 18px rgb(var(--shadow-color) / .08);
 }
+.room-roomscape-window .room-cloud-two { right: auto; left: 46%; }
 html.dark .room-roomscape-window {
   background: linear-gradient(180deg, #091322 0%, #152238 100%);
   border-color: var(--border-subtle);
-  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.4), 0 5px 0 -1px var(--border-subtle);
 }
 html.dark .room-sun {
   background: #f8fafc;
@@ -1319,18 +1326,21 @@ html.dark .preview-window-line {
   font: 700 10px Arial, sans-serif;
 }
 .room-roomscape-desk {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 96px;
+  grid-area: desk;
+  margin: 0 -22px;
+  min-height: 92px;
+  padding: 0 clamp(20px, 8%, 56px) 0;
   background: var(--card);
   border-top: 3px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 0 52px;
+  border-bottom: 14px solid color-mix(in srgb, var(--primary) 16%, var(--card));
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  justify-items: center;
+  overflow: hidden;
 }
+.room-roomscape-desk > * { margin-bottom: 0; }
+.room-roomscape-desk > .desk-lamp { align-self: center; }
 .desk-lamp {
   position: relative;
   border: 0;
@@ -1350,16 +1360,18 @@ html.dark .preview-window-line {
 }
 .lamp-glow-cone {
   position: absolute;
-  bottom: 10px;
-  left: 35px;
-  width: 110px;
-  height: 130px;
-  background: linear-gradient(180deg, rgba(253,224,71,0.3) 0%, transparent 100%);
+  top: 50%;
+  left: 50%;
+  z-index: -1;
+  width: 150px;
+  height: 80px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, rgba(253,224,71,0.38) 0%, transparent 100%);
   pointer-events: none;
-  border-radius: 0 0 50px 50px;
   clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
 }
 .desk-laptop {
+  position: relative;
   width: 95px;
   height: 60px;
   border-radius: 8px 8px 0 0;
@@ -1369,6 +1381,16 @@ html.dark .preview-window-line {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+.desk-laptop::after {
+  content: "";
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  bottom: -5px;
+  height: 5px;
+  border-radius: 0 0 6px 6px;
+  background: #1e293b;
 }
 .screen-code-lines i {
   height: 3px;
@@ -1385,6 +1407,8 @@ html.dark .preview-window-line {
   flex-direction: column;
   align-items: center;
 }
+.room-roomscape .desk-cup { padding-bottom: 6px; padding-right: 12px; }
+.room-roomscape .desk-cup .preview-mug { position: relative; right: auto; bottom: auto; }
 .steam-wrapper { display: flex; gap: 3px; margin-bottom: 2px; }
 .steam {
   width: 3px;
@@ -1802,6 +1826,18 @@ html[data-theme="strawberry-lemonade"] .cozy-wallpaper-pattern::before {
   .map-grid { grid-template-columns: repeat(2, 1fr); }
   .room-layout { grid-template-columns: 1fr; }
   .showcase-section { grid-template-columns: 1fr; gap: 40px; }
+}
+
+@media (max-width: 560px) {
+  .room-roomscape {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas: "label" "window" "focus" "desk";
+    padding: 14px 14px 0;
+  }
+  .room-roomscape-window { min-height: 128px; margin: 14px 0 0; }
+  .room-focus-board { margin: 14px 0 16px; max-width: none; }
+  .room-roomscape-desk { margin: 0 -14px; padding-inline: 14px; }
 }
 
 @media (max-width: 650px) {
