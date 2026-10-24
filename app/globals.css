@@ -1643,9 +1643,38 @@ html.dark .preview-window-line {
 }
 
 .map-canvas-wrap .react-flow__controls {
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  overflow: hidden;
+  border: none;
+  border-radius: 5px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.react-flow__controls-button {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  margin-bottom: 5px;
+  border: 1.8px solid var(--border-subtle) !important;
+  border-radius: 50% !important;
+  background: var(--card) !important;
+  color: var(--foreground) !important;
+  box-shadow: 0 2px 8px rgb(var(--shadow-color) / 0.05);
+  box-sizing: border-box;
+  transition: transform 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease !important;
+}
+
+.react-flow__controls-button:hover {
+  background: var(--surface-soft) !important;
+  border-color: var(--brand) !important;
+  color: var(--brand) !important;
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px) !important;
 }
 
 .map-canvas-wrap .react-flow__controls-button:active {
