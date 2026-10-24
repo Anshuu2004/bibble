@@ -22,9 +22,11 @@ export function useStudyStats() {
 
   // Hydrate sessions from localStorage on mount
   useEffect(() => {
-    const loaded = loadSessionsFromStorage();
-    setSessions(loaded);
-    setHydrated(true);
+    const timer = window.setTimeout(() => {
+      const loaded = loadSessionsFromStorage();
+      setSessions(loaded);
+      setHydrated(true);
+    }, 0);
 
     const handleSessionRecorded = (e: Event) => {
       const customEvent = e as CustomEvent<FocusSession>;
@@ -43,6 +45,7 @@ export function useStudyStats() {
     window.addEventListener("bibble-stats-reset", handleReset);
 
     return () => {
+      window.clearTimeout(timer);
       window.removeEventListener("bibble-focus-session-recorded", handleSessionRecorded);
       window.removeEventListener("bibble-stats-reset", handleReset);
     };

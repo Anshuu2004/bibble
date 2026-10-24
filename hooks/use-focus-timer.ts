@@ -12,12 +12,13 @@ export function useFocusTimer(initialMinutes = 25, onComplete?: () => void) {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
-  // Update seconds when initialMinutes changes if timer not active
-  useEffect(() => {
+  const [prevInitialMinutes, setPrevInitialMinutes] = useState(initialMinutes);
+  if (prevInitialMinutes !== initialMinutes) {
+    setPrevInitialMinutes(initialMinutes);
     if (!active && !isCompleted) {
       setSeconds(initialMinutes * 60);
     }
-  }, [initialMinutes, active, isCompleted]);
+  }
 
   useEffect(() => {
     if (!active) return;

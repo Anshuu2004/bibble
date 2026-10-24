@@ -1,4 +1,4 @@
-import type { DailyStreakInfo, FocusSession, MapProgressItem, StudyStats } from "@/types/progress";
+import type { DailyStreakInfo, FocusSession, MapProgressItem } from "@/types/progress";
 import type { LearningMap } from "@/types/map";
 import { getMapProgress, sampleMaps } from "@/data/sample-maps";
 

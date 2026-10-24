@@ -25,7 +25,6 @@ export default function ProgressPage() {
   const { motif } = useTheme();
   const {
     sessions,
-    totalMinutes,
     formattedDuration,
     streak,
     mapItems,
