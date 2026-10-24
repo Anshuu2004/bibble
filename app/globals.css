@@ -1810,21 +1810,16 @@ html[data-theme="strawberry-lemonade"] .cozy-wallpaper-pattern::before {
 .learning-map-shell {
   position: relative;
   width: 100%;
-  height: 100%;
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 78px);
-}
-.learning-map-editor {
-  min-height: calc(100vh - 78px);
+  min-height: 0;
 }
 .map-canvas-wrap {
   position: relative;
   width: 100%;
-  height: 100%;
   flex: 1;
-  min-height: 500px;
+  min-height: 0;
   display: flex;
   flex-direction: column;
 }
