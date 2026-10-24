@@ -157,7 +157,7 @@ export function LearningMapCanvas({ initialMap, editable = false }: { initialMap
       >
         <Background variant={BackgroundVariant.Lines} color="color-mix(in srgb, var(--border) 60%, transparent)" gap={28} />
         <Controls showInteractive={false} />
-        <MiniMap nodeColor="var(--canvas-node)" maskColor="rgb(255 255 255 / 0.72)" />
+        <MiniMap nodeColor="var(--canvas-node)" />
       </ReactFlow>
       {!editable && <div className="map-canvas-hint"><Star size={14} /> Click a bibble to explore it</div>}
     </div>
