@@ -56,6 +56,7 @@ export function MapPreview({ map, compact = false }: { map: LearningMap; compact
         zoomOnScroll
         fitView
         fitViewOptions={{ padding: compact ? 0.35 : 0.25 }}
+        proOptions={{ hideAttribution: true }}
       >
         <Background variant={BackgroundVariant.Lines} color="color-mix(in srgb, var(--border) 60%, transparent)" gap={28} />
         {!compact && <Controls showInteractive={false} />}
