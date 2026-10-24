@@ -1620,6 +1620,37 @@ html.dark .preview-window-line {
 .map-page-header { min-height: 78px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; border-bottom: 1px solid var(--border); background: var(--card); }
 .header-action { padding: 9px 15px; border: 1px solid var(--border); border-radius: 99px; font: 700 12px Arial, sans-serif; background: var(--card); color: var(--foreground); }
 .learning-map-shell .react-flow { background: var(--background); }
+
+/* React Flow controls & minimap — scoped to the learning map canvas */
+.map-canvas-wrap {
+  --xy-controls-button-background-color: var(--surface-card);
+  --xy-controls-button-background-color-hover: var(--surface-soft);
+  --xy-controls-button-color: var(--text-primary);
+  --xy-controls-button-color-hover: var(--brand);
+  --xy-controls-button-border-color: var(--border-subtle);
+  --xy-controls-box-shadow: var(--shadow-card);
+
+  --xy-minimap-background-color: var(--surface-card);
+  --xy-minimap-mask-background-color: color-mix(in srgb, var(--surface-page) 70%, transparent);
+  --xy-minimap-node-background-color: var(--canvas-node);
+}
+
+.map-canvas-wrap .react-flow__controls {
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.map-canvas-wrap .react-flow__controls-button:active {
+  background: var(--surface-strong);
+}
+
+.map-canvas-wrap .react-flow__minimap {
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
 .map-toolbar { position: absolute; z-index: 4; top: 18px; left: 50%; display: flex; align-items: center; gap: 6px; min-height: 50px; padding: 6px 12px; transform: translateX(-50%); border: 1px solid var(--border); border-radius: 14px; background: var(--card); box-shadow: var(--shadow); }
 .toolbar-primary { padding: 8px 16px; border-radius: 99px; color: #fff; background: var(--primary); font: 700 12px Arial, sans-serif; border: 0; cursor: pointer; }
 .toolbar-button { width: 36px; height: 36px; display: grid; place-items: center; color: var(--muted); background: transparent; border: 0; border-radius: 8px; cursor: pointer; }
