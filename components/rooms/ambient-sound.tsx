@@ -2,7 +2,7 @@
 
 import { useAmbientAudio } from "@/hooks/use-ambient-audio";
 import type { Soundscape } from "@/lib/audio/sound-synth";
-import { CloudRain, Coffee, Music2, Pause, Play, Volume1, Volume2, VolumeX, Wind } from "lucide-react";
+import { CloudRain, Coffee, Music2, Pause, Play, Volume1, Volume2, VolumeX, Wind, Gamepad2, Leaf } from "lucide-react";
 
 export type { Soundscape };
 
@@ -27,6 +27,8 @@ export function AmbientSound({ onSoundscapeChange }: AmbientSoundProps) {
     { id: "wind", label: "Wind", icon: Wind },
     { id: "drift", label: "Drift", icon: Music2 },
     { id: "cafe", label: "Cafe", icon: Coffee },
+    { id: "minecraft", label: "Minecraft", icon: Gamepad2 },
+    { id: "nature", label: "Nature", icon: Leaf },
     { id: "off", label: "Quiet", icon: VolumeX },
   ];
 
@@ -119,6 +121,8 @@ export function AmbientSound({ onSoundscapeChange }: AmbientSoundProps) {
         {sound === "wind" && "🍃 Sweeping cozy breeze rustling through forest leaves"}
         {sound === "drift" && "🎵 Warm lofi synth pad chord for deep focus"}
         {sound === "cafe" && "☕ Cozy coffee shop room murmur with gentle cup clinks"}
+        {sound === "minecraft" && "🎮 Peaceful late-night rain, dreamy pads and rare chimes"}
+        {sound === "nature" && "🌲 Calming forest sounds on a seamless loop"}
         {sound === "off" && "Silent mode — select any sound above or press Play"}
       </small>
     </div>
