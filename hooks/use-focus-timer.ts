@@ -1,10 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-export function useFocusTimer(initialMinutes = 25) {
+export function useFocusTimer(initialMinutes = 25, onComplete?: () => void) {
   const [seconds, setSeconds] = useState(initialMinutes * 60);
   const [active, setActive] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  const onCompleteRef = useRef(onComplete);
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
+  const [prevInitialMinutes, setPrevInitialMinutes] = useState(initialMinutes);
+  if (prevInitialMinutes !== initialMinutes) {
+    setPrevInitialMinutes(initialMinutes);
+    if (!active && !isCompleted) {
+      setSeconds(initialMinutes * 60);
+    }
+  }
 
   useEffect(() => {
     if (!active) return;
@@ -12,6 +26,8 @@ export function useFocusTimer(initialMinutes = 25) {
       setSeconds((currentSeconds) => {
         if (currentSeconds <= 1) {
           setActive(false);
+          setIsCompleted(true);
+          onCompleteRef.current?.();
           return 0;
         }
 
@@ -28,7 +44,22 @@ export function useFocusTimer(initialMinutes = 25) {
 
   const formattedTime = `${minutesStr}:${secondsStr}`;
 
-  const toggleTimer = () => setActive((prev) => !prev);
+  const toggleTimer = useCallback(() => {
+    if (isCompleted && seconds === 0) {
+      // If completed and restarted, reset back to full duration
+      setSeconds(initialMinutes * 60);
+      setIsCompleted(false);
+      setActive(true);
+      return;
+    }
+    setActive((prev) => !prev);
+  }, [initialMinutes, isCompleted, seconds]);
+
+  const resetTimer = useCallback(() => {
+    setActive(false);
+    setIsCompleted(false);
+    setSeconds(initialMinutes * 60);
+  }, [initialMinutes]);
 
   return {
     seconds,
@@ -38,5 +69,8 @@ export function useFocusTimer(initialMinutes = 25) {
     secondsStr,
     toggleTimer,
     setActive,
+    resetTimer,
+    isCompleted,
+    setIsCompleted,
   };
 }
