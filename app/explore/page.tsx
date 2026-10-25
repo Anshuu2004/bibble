@@ -15,12 +15,18 @@ export default function ExplorePage() {
   // Read user-saved map overrides from localStorage
   const [storedMaps] = useLocalStorage<LearningMap[]>("bibble-maps", []);
 
-  // Merge: storedMaps replace their matching sampleMap (same id); rest stay as-is
+  // Merge: stored maps override matching sample maps, and user-created maps are appended.
   const allMaps = useMemo(() => {
-    return sampleMaps.map((sample) => {
+    const merged = sampleMaps.map((sample) => {
       const saved = storedMaps.find((m) => m.id === sample.id);
       return saved ?? sample;
     });
+    for (const stored of storedMaps) {
+      if (!merged.some((m) => m.id === stored.id)) {
+        merged.push(stored);
+      }
+    }
+    return merged;
   }, [storedMaps]);
 
   const maps = useMemo(
@@ -41,7 +47,7 @@ export default function ExplorePage() {
           <h1>Find a map that feels like yours.</h1>
           <p>Browse a few learning worlds made for wandering, connecting, and coming back to.</p>
         </div>
-        <div className="explore-stats"><strong>{sampleMaps.length}</strong><span>sample maps<br />to explore</span></div>
+        <div className="explore-stats"><strong>{allMaps.length}</strong><span>maps<br />to explore</span></div>
       </section>
       <section className="explore-controls">
         <label className="search-field">

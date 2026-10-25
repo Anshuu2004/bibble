@@ -1,16 +1,5 @@
-import { LearningMapCanvas } from "@/components/map/learning-map";
-import { getMapById } from "@/data/sample-maps";
-import { notFound } from "next/navigation";
+import { MapPageClient } from "./map-page-client";
 
-export default async function MapPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const map = getMapById(id);
-
-  if (!map) notFound();
-
-  return <LearningMapCanvas initialMap={map} />;
+export default function MapPage() {
+  return <MapPageClient />;
 }
