@@ -11,8 +11,12 @@ import { useParams } from "next/navigation";
 
 export default function EditMapPage() {
   const { id } = useParams<{ id: string }>();
-  const [storedMaps, , hydrated] = useLocalStorage<LearningMap[]>("bibble-maps", []);
-  const map = storedMaps.find((storedMap) => storedMap.id === id) ?? getMapById(id);
+  const [storedMaps, , storedHydrated] = useLocalStorage<LearningMap[]>("bibble-maps", []);
+  const [deletedMapIds, , deletedHydrated] = useLocalStorage<string[]>("bibble-deleted-maps", []);
+  const hydrated = storedHydrated && deletedHydrated;
+  const map = deletedMapIds.includes(id)
+    ? undefined
+    : storedMaps.find((storedMap) => storedMap.id === id) ?? getMapById(id);
 
   if (!hydrated) {
     return (
