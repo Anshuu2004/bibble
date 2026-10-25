@@ -372,6 +372,10 @@
   box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 28%, transparent);
 }
 
+.filterTabActive:hover {
+  color: #ffffff;
+}
+
 /* Map Grid */
 .mapGrid {
   display: grid;

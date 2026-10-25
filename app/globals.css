@@ -1600,6 +1600,9 @@ html.dark .preview-window-line {
 .category-row button { padding: 9px 18px; border: 1px solid var(--border); border-radius: 99px; color: var(--foreground); background: var(--card); cursor: pointer; font: 700 12px var(--font-body), sans-serif; transition: all 0.15s ease; }
 .category-row button:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
 .category-row .category-active { color: #fff; background: var(--primary); border-color: var(--primary); font-weight: 700; box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 28%, transparent); }
+.category-row .category-active:hover {
+  color: #fff;
+}
 
 .map-grid { width: min(1180px, calc(100% - 48px)); margin: 0 auto 80px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
 .map-card { overflow: hidden; border: 1px solid var(--border); border-radius: 20px; background: var(--card); box-shadow: 0 6px 22px rgba(0,0,0,.04); transition: transform .2s ease, box-shadow .2s ease; display: flex; flex-direction: column; }
