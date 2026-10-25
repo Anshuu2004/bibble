@@ -11,8 +11,16 @@ import { useParams } from "next/navigation";
 
 export default function EditMapPage() {
   const { id } = useParams<{ id: string }>();
-  const [storedMaps] = useLocalStorage<LearningMap[]>("bibble-maps", []);
+  const [storedMaps, , hydrated] = useLocalStorage<LearningMap[]>("bibble-maps", []);
   const map = storedMaps.find((storedMap) => storedMap.id === id) ?? getMapById(id);
+
+  if (!hydrated) {
+    return (
+      <main className="empty-state">
+        <h2>Loading map…</h2>
+      </main>
+    );
+  }
 
   if (!map) {
     return (
