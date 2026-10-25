@@ -11,13 +11,16 @@ import { useMemo } from "react";
 
 export function MapPageClient() {
   const { id } = useParams<{ id: string }>();
-  const [storedMaps, , hydrated] = useLocalStorage<LearningMap[]>("bibble-maps", []);
+  const [storedMaps, , storedHydrated] = useLocalStorage<LearningMap[]>("bibble-maps", []);
+  const [deletedMapIds, , deletedHydrated] = useLocalStorage<string[]>("bibble-deleted-maps", []);
+  const hydrated = storedHydrated && deletedHydrated;
 
   const map = useMemo(() => {
+    if (deletedMapIds.includes(id)) return null;
     return storedMaps.find((storedMap) => storedMap.id === id)
       ?? sampleMaps.find((sampleMap) => sampleMap.id === id)
       ?? null;
-  }, [storedMaps, id]);
+  }, [storedMaps, deletedMapIds, id]);
 
   if (!hydrated) {
     return (

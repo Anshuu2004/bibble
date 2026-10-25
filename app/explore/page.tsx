@@ -12,22 +12,27 @@ import { useMemo, useState } from "react";
 export default function ExplorePage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All maps");
-  // Read user-saved map overrides from localStorage
-  const [storedMaps] = useLocalStorage<LearningMap[]>("bibble-maps", []);
+  // Read user-saved/custom maps and the IDs of system maps the user removed.
+  const [storedMaps, setStoredMaps] = useLocalStorage<LearningMap[]>("bibble-maps", []);
+  const [deletedMapIds, setDeletedMapIds] = useLocalStorage<string[]>("bibble-deleted-maps", []);
 
-  // Merge: stored maps override matching sample maps, and user-created maps are appended.
+  // Merge: stored maps override matching sample maps, user-created maps are appended,
+  // and system maps the user deleted are left out entirely (even if an override exists).
   const allMaps = useMemo(() => {
-    const merged = sampleMaps.map((sample) => {
-      const saved = storedMaps.find((m) => m.id === sample.id);
-      return saved ?? sample;
-    });
+    const merged = sampleMaps
+      .filter((sample) => !deletedMapIds.includes(sample.id))
+      .map((sample) => {
+        const saved = storedMaps.find((m) => m.id === sample.id);
+        return saved ?? sample;
+      });
     for (const stored of storedMaps) {
+      if (deletedMapIds.includes(stored.id)) continue;
       if (!merged.some((m) => m.id === stored.id)) {
         merged.push(stored);
       }
     }
     return merged;
-  }, [storedMaps]);
+  }, [storedMaps, deletedMapIds]);
 
   const maps = useMemo(
     () => allMaps.filter(
@@ -37,6 +42,17 @@ export default function ExplorePage() {
     ),
     [allMaps, category, query],
   );
+
+  // System maps are hidden via an ID list; user-created maps are removed from storage.
+  const handleDeleteMap = (mapId: string) => {
+    if (sampleMaps.some((map) => map.id === mapId)) {
+      setDeletedMapIds((currentIds) =>
+        currentIds.includes(mapId) ? currentIds : [...currentIds, mapId],
+      );
+      return;
+    }
+    setStoredMaps((currentMaps) => currentMaps.filter((map) => map.id !== mapId));
+  };
 
   return (
     <main className="app-page">
@@ -62,7 +78,13 @@ export default function ExplorePage() {
         </div>
       </section>
       <section className="map-grid">
-        {maps.map((map) => <MapCard key={map.id} map={map} />)}
+        {maps.map((map) => (
+          <MapCard
+            key={map.id}
+            map={map}
+            onDelete={handleDeleteMap}
+          />
+        ))}
       </section>
       {maps.length === 0 && (
         <div className="empty-state">

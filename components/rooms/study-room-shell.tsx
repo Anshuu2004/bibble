@@ -12,7 +12,7 @@ import { recordFocusSession } from "@/lib/progress";
 import { ArrowLeft, Bell, Headphones, Sparkles, Users } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 const initialPeople = ["Mina", "Noah", "Leah", "Ari"];
 
@@ -35,7 +35,15 @@ export function StudyRoomShell({ room }: { room: StudyRoom }) {
     window.setTimeout(() => setToastMessage(null), 3000);
   }, []);
 
+  // A timer run may only ever record one session, whether it finishes
+  // naturally or through "Complete & log" (which can be clicked repeatedly).
+  const runIdRef = useRef(0);
+  const loggedRunIdRef = useRef<number | null>(null);
+
   const handleSessionComplete = useCallback(() => {
+    if (loggedRunIdRef.current === runIdRef.current) return;
+    loggedRunIdRef.current = runIdRef.current;
+
     recordFocusSession({
       minutes: room.minutes,
       roomId: room.id,
@@ -50,6 +58,16 @@ export function StudyRoomShell({ room }: { room: StudyRoom }) {
     room.minutes,
     handleSessionComplete
   );
+
+  const handleTimerToggle = () => {
+    if (isCompleted) runIdRef.current += 1;
+    toggleTimer();
+  };
+
+  const handleTimerReset = () => {
+    runIdRef.current += 1;
+    resetTimer();
+  };
 
   const handleManualComplete = () => {
     handleSessionComplete();
@@ -146,9 +164,9 @@ export function StudyRoomShell({ room }: { room: StudyRoom }) {
             minutes={room.minutes}
             formattedTime={formattedTime}
             active={active}
-            onToggleActive={toggleTimer}
+            onToggleActive={handleTimerToggle}
             onCompleteEarly={handleManualComplete}
-            onReset={resetTimer}
+            onReset={handleTimerReset}
             isCompleted={isCompleted}
           />
         </section>

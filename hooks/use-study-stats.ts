@@ -91,9 +91,10 @@ export function useStudyStats() {
       note?: string;
       completedAt?: string;
     }) => {
-      const newSession = recordSessionLib(input);
-      setSessions((prev) => [newSession, ...prev]);
-      return newSession;
+      // recordSessionLib persists the session and dispatches
+      // "bibble-focus-session-recorded", whose listener below is the single
+      // owner of session state (it de-duplicates by session id).
+      return recordSessionLib(input);
     },
     []
   );
