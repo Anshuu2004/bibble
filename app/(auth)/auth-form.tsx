@@ -1,37 +1,24 @@
 "use client";
 
-import { ThemePicker } from "@/components/ui/theme-picker";
-import { useTheme } from "@/hooks/use-theme";
+import { useActionState } from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+
+import { login, signup } from "@/app/actions/auth";
+import { passwordRequirements } from "@/lib/auth/validation";
+import { ThemePicker } from "@/components/ui/theme-picker";
+import { useTheme } from "@/hooks/use-theme";
 import styles from "./auth.module.css";
 
 type AuthMode = "login" | "signup";
 
-const accountKey = "bibble-account";
-
 export function AuthForm({ mode }: { mode: AuthMode }) {
   const { motif } = useTheme();
   const isSignup = mode === "signup";
-  const [message, setMessage] = useState("");
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const name = String(form.get("name") ?? "").trim();
-    const email = String(form.get("email") ?? "").trim().toLowerCase();
-
-    if (isSignup) {
-      window.localStorage.setItem(accountKey, JSON.stringify({ name, email }));
-      setMessage(`Your local Bibble account is ready, ${name || "friend"}.`);
-      return;
-    }
-
-    const saved = window.localStorage.getItem(accountKey);
-    const account = saved ? (JSON.parse(saved) as { email?: string }) : null;
-    setMessage(account?.email === email ? "Welcome back — you're signed in on this browser." : "No local account matches that email. You can sign up in a moment.");
-  }
+  const [state, formAction, pending] = useActionState(
+    isSignup ? signup : login,
+    undefined,
+  );
 
   return (
     <main className={styles.page}>
@@ -48,15 +35,21 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
       <section className={styles.shell} aria-labelledby="auth-title">
         <span className={`eyebrow ${styles.eyebrow}`}><Sparkles size={14} /> Your little learning corner</span>
         <h1 id="auth-title" className={styles.title}>{isSignup ? "Make it yours." : "Welcome back."}</h1>
-        <p className={styles.copy}>{isSignup ? "Create an account to keep your Bibble identity close. You can still browse every sample map and study room without one." : "Log in to your local Bibble account. Browsing, previews, and map-making are always open."}</p>
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <p className={styles.copy}>{isSignup ? "Create an account to keep your Bibble identity close. You can still browse every sample map and study room without one." : "Log in to your Bibble account. Browsing, previews, and map-making are always open."}</p>
+        <form className={styles.form} action={formAction}>
           {isSignup && <div className={styles.field}><label htmlFor="name">Name</label><input id="name" name="name" autoComplete="name" required /></div>}
           <div className={styles.field}><label htmlFor="email">Email</label><input id="email" name="email" type="email" autoComplete="email" required /></div>
-          <button className={styles.submit} type="submit">{isSignup ? "Create account" : "Log in"} <ArrowRight size={16} /></button>
-          {message && <p className={styles.message} role="status">{message}</p>}
+          <div className={styles.field}><label htmlFor="password">Password</label><input id="password" name="password" type="password" autoComplete={isSignup ? "new-password" : "current-password"} aria-describedby={isSignup ? "password-help" : undefined} required /></div>
+          {isSignup && <>
+            <p id="password-help" className={styles.note} aria-live="polite">Your password should have:</p>
+            <ul className={styles.note}>{passwordRequirements.map((requirement) => <li key={requirement}>{requirement}</li>)}</ul>
+            <div className={styles.field}><label htmlFor="confirmPassword">Confirm password</label><input id="confirmPassword" name="confirmPassword" type="password" autoComplete="new-password" required /></div>
+          </>}
+          {state?.message && <p className={styles.message} role="alert">{state.message}</p>}
+          <button className={styles.submit} type="submit" disabled={pending}>{pending ? "Please wait..." : isSignup ? "Create account" : "Log in"} <ArrowRight size={16} /></button>
         </form>
         <p className={styles.switch}>{isSignup ? <>Already have an account? <Link href="/login">Log in</Link></> : <>New here? <Link href="/signup">Create an account</Link></>}</p>
-        <p className={styles.note}>This simple project demo stores account details only in this browser; it is not a secure production authentication system.</p>
+        <p className={styles.note}>Your password is securely handled by Supabase Auth and is never stored in plaintext.</p>
       </section>
     </main>
   );
