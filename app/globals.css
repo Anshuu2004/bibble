@@ -924,6 +924,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 .rooms-toolbar { width: min(1180px, calc(100% - 48px)); margin: 0 auto 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
 .rooms-toolbar-note { font: 600 12px Arial, sans-serif; color: var(--muted); }
+.rooms-toolbar-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
 .room-search { width: 320px; display: flex; gap: 10px; align-items: center; padding: 12px 18px; border: 1px solid var(--border); border-radius: 99px; color: var(--muted); background: var(--card); box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
 .room-search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--foreground); font: 13px Arial, sans-serif; }
 
