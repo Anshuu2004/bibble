@@ -21,6 +21,17 @@ import {
   X,
 } from "lucide-react";
 
+function formatSessionTimestamp(completedAt: string): string {
+  const dateObj = new Date(completedAt);
+  if (Number.isNaN(dateObj.getTime())) return "Unknown time";
+
+  const isToday = dateObj.toDateString() === new Date().toDateString();
+  const time = dateObj.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  return isToday
+    ? `Today at ${time}`
+    : `${dateObj.toLocaleDateString([], { month: "short", day: "numeric" })} at ${time}`;
+}
+
 export default function ProgressPage() {
   const { motif } = useTheme();
   const {
@@ -411,12 +422,7 @@ export default function ProgressPage() {
 
             <div className={styles.sessionsList}>
               {sessions.slice(0, 8).map((session) => {
-                const dateObj = new Date(session.completedAt);
-                const isToday =
-                  dateObj.toDateString() === new Date().toDateString();
-                const formattedDate = isToday
-                  ? `Today at ${dateObj.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`
-                  : `${dateObj.toLocaleDateString([], { month: "short", day: "numeric" })} at ${dateObj.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`;
+                const formattedDate = formatSessionTimestamp(session.completedAt);
 
                 return (
                   <div key={session.id} className={styles.sessionItem}>
