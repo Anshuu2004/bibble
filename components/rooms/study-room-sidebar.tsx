@@ -82,12 +82,13 @@ export function StudyRoomSidebar({
           </span>
         </div>
         <div className="room-note-list">
-          {notes.map((item) => (
-            <div className="room-note" key={item}>
+          {notes.map((item, index) => (
+            <div className="room-note" key={`${index}-${item}`}>
               {item}
             </div>
           ))}
         </div>
+        <p className="room-note-hint">Notes are saved in this browser only, so they stay after a refresh but are not shared.</p>
         <form className="room-note-form" onSubmit={onAddNote}>
           <input
             value={noteInput}
