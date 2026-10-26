@@ -3,21 +3,25 @@
 import { StudyRoomCard } from "@/components/rooms/study-room-card";
 import { SiteHeader } from "@/components/site-header";
 import { studyRooms } from "@/data/study-rooms";
-import { Search, Star, Users } from "lucide-react";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { CUSTOM_ROOMS_KEY } from "@/lib/rooms/custom-rooms";
+import type { StudyRoom } from "@/types/room";
+import { Plus, Search, Star, Users } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
 export default function RoomsPage() {
   const [query, setQuery] = useState("");
+  const [customRooms] = useLocalStorage<StudyRoom[]>(CUSTOM_ROOMS_KEY, []);
 
   const rooms = useMemo(
     () =>
-      studyRooms.filter((room) =>
+      [...studyRooms, ...customRooms].filter((room) =>
         `${room.name} ${room.topic} ${room.tags.join(" ")}`
           .toLowerCase()
           .includes(query.toLowerCase())
       ),
-    [query]
+    [query, customRooms]
   );
 
   return (
@@ -56,9 +60,14 @@ export default function RoomsPage() {
             aria-label="Search study rooms"
           />
         </div>
-        <span className="rooms-toolbar-note">
-          {rooms.length} open rooms · no sign-up needed
-        </span>
+        <div className="rooms-toolbar-actions">
+          <span className="rooms-toolbar-note">
+            {rooms.length} open rooms · no sign-up needed
+          </span>
+          <Link href="/rooms/new" className="button-primary">
+            <Plus size={16} aria-hidden="true" /> Create a room
+          </Link>
+        </div>
       </div>
 
       <section className="room-grid">
