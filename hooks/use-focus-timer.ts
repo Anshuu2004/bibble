@@ -6,6 +6,7 @@ export function useFocusTimer(initialMinutes = 25, onComplete?: () => void) {
   const [seconds, setSeconds] = useState(initialMinutes * 60);
   const [active, setActive] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const endAtRef = useRef<number | null>(null);
 
   const onCompleteRef = useRef(onComplete);
   useEffect(() => {
@@ -21,21 +22,34 @@ export function useFocusTimer(initialMinutes = 25, onComplete?: () => void) {
   }
 
   useEffect(() => {
-    if (!active) return;
-    const timer = window.setInterval(() => {
-      setSeconds((currentSeconds) => {
-        if (currentSeconds <= 1) {
-          setActive(false);
-          setIsCompleted(true);
-          onCompleteRef.current?.();
-          return 0;
-        }
+    if (!active) {
+      endAtRef.current = null;
+      return;
+    }
 
-        return currentSeconds - 1;
-      });
-    }, 1000);
-    return () => window.clearInterval(timer);
-  }, [active]);
+    // Keep the same deadline across ticks, even when the browser delays them.
+    endAtRef.current ??= Date.now() + seconds * 1000;
+    const updateRemainingTime = () => {
+      if (endAtRef.current === null) return;
+      const remaining = Math.max(0, Math.ceil((endAtRef.current - Date.now()) / 1000));
+      setSeconds(remaining);
+
+      if (remaining === 0) {
+        // Clear before notifying so another tick cannot complete this run twice.
+        endAtRef.current = null;
+        setActive(false);
+        setIsCompleted(true);
+        onCompleteRef.current?.();
+      }
+    };
+
+    const timer = window.setInterval(updateRemainingTime, 1000);
+    document.addEventListener("visibilitychange", updateRemainingTime);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", updateRemainingTime);
+    };
+  }, [active, seconds]);
 
   const minutesStr = Math.floor(seconds / 60)
     .toString()
@@ -48,14 +62,20 @@ export function useFocusTimer(initialMinutes = 25, onComplete?: () => void) {
     if (isCompleted && seconds === 0) {
       // If completed and restarted, reset back to full duration
       setSeconds(initialMinutes * 60);
+      endAtRef.current = null;
       setIsCompleted(false);
       setActive(true);
       return;
     }
+    if (active && endAtRef.current !== null) {
+      setSeconds(Math.max(0, Math.ceil((endAtRef.current - Date.now()) / 1000)));
+      endAtRef.current = null;
+    }
     setActive((prev) => !prev);
-  }, [initialMinutes, isCompleted, seconds]);
+  }, [active, initialMinutes, isCompleted, seconds]);
 
   const resetTimer = useCallback(() => {
+    endAtRef.current = null;
     setActive(false);
     setIsCompleted(false);
     setSeconds(initialMinutes * 60);
