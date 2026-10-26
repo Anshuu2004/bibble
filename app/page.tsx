@@ -1,5 +1,6 @@
 "use client";
 
+import { WelcomeGuide } from "@/components/home/welcome-guide";
 import { MapPreview } from "@/components/map/map-preview";
 import { StudyRoomPreview } from "@/components/rooms/study-room-preview";
 import { SiteHeader } from "@/components/site-header";
@@ -51,6 +52,7 @@ export default function Home() {
         </div>
         <StudyRoomPreview room={studyRooms[0]} />
       </section>
+      <WelcomeGuide />
       <section className="rooms-preview">
         <div className="rooms-preview-heading">
           <div>
