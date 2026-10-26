@@ -6,6 +6,7 @@ import { StudyRoomScene } from "@/components/rooms/study-room-scene";
 import { StudyRoomSidebar } from "@/components/rooms/study-room-sidebar";
 import { ThemePicker } from "@/components/ui/theme-picker";
 import { useFocusTimer } from "@/hooks/use-focus-timer";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useTheme } from "@/hooks/use-theme";
 import type { StudyRoom } from "@/types/room";
 import { recordFocusSession } from "@/lib/progress";
@@ -15,16 +16,17 @@ import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
 
 const initialPeople = ["Mina", "Noah", "Leah", "Ari"];
+const defaultNotes = [
+  "Finish one small thing before the timer ends.",
+  "No need to rush. Showing up counts.",
+];
 
 export function StudyRoomShell({ room }: { room: StudyRoom }) {
   const { motif } = useTheme();
 
   const [joined, setJoined] = useState(false);
   const [note, setNote] = useState("");
-  const [notes, setNotes] = useState([
-    "Finish one small thing before the timer ends.",
-    "No need to rush. Showing up counts.",
-  ]);
+  const [notes, setNotes] = useLocalStorage<string[]>(`bibble-room-notes-${room.id}`, defaultNotes);
   const [soundscape, setSoundscape] = useState<Soundscape>("off");
   const [lampOn, setLampOn] = useState(true);
   const [catHearts, setCatHearts] = useState<number>(0);
