@@ -1555,6 +1555,10 @@ html.dark .preview-window-line {
 .room-note-list { display: flex; flex-direction: column; gap: 10px; max-height: 180px; overflow-y: auto; }
 .room-note { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 1.4; color: var(--muted); padding: 8px 12px; border-radius: 10px; background: var(--background); }
 .note-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); flex-shrink: 0; margin-top: 5px; }
+.focus-notify { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 4px; }
+.focus-notify small { color: var(--muted-foreground); font-size: 12px; text-align: center; }
+.focus-notify-button { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 99px; background: transparent; color: var(--foreground); font: 600 13px Arial, sans-serif; cursor: pointer; }
+.focus-notify-button[aria-pressed="true"] { border-color: var(--primary); color: var(--primary); background: var(--surface-soft); }
 .room-note-form { display: flex; gap: 8px; margin-top: 6px; }
 .room-note-form input { flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 99px; background: var(--background); font-size: 13px; outline: 0; color: var(--foreground); }
 .room-note-form button { width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: 50%; color: #fff; background: var(--primary); cursor: pointer; flex-shrink: 0; }
