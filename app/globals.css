@@ -888,6 +888,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   flex-shrink: 0;
 }
 
+/* Welcome guide */
+.welcome-guide { width: min(1180px, calc(100% - 48px)); margin: 0 auto 56px; padding: 26px 30px 30px; border: 1px solid var(--border); border-radius: 22px; background: var(--lavender); box-shadow: var(--shadow); }
+.welcome-guide-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.welcome-guide-header h2 { margin: 10px 0 0; font-size: 28px; line-height: 1.1; font-weight: 500; letter-spacing: -.03em; color: var(--foreground); }
+.welcome-guide-dismiss { width: 36px; height: 36px; display: grid; place-items: center; flex-shrink: 0; border: 1px solid var(--border); border-radius: 50%; color: var(--muted); background: var(--card); cursor: pointer; transition: color .15s ease, border-color .15s ease; }
+.welcome-guide-dismiss:hover { color: var(--primary); border-color: var(--primary); }
+.welcome-guide-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 22px 0 0; padding: 0; list-style: none; counter-reset: guide-step; }
+.welcome-guide-steps li { counter-increment: guide-step; display: flex; flex-direction: column; align-items: flex-start; padding: 18px 20px 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); }
+.welcome-guide-steps li::before { content: counter(guide-step); width: 28px; height: 28px; display: grid; place-items: center; margin-bottom: 12px; border-radius: 50%; color: #fff; background: var(--primary); font: 700 13px var(--font-body), sans-serif; }
+.welcome-guide-steps h3 { margin: 0 0 6px; font-size: 19px; font-weight: 500; color: var(--foreground); }
+.welcome-guide-steps p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; }
+.welcome-guide-steps .text-link { margin-top: auto; padding-top: 16px; }
+
 /* How Section & Showcase */
 .how-section, .showcase-section { width: min(1180px, calc(100% - 48px)); margin: auto; }
 .how-section { padding-bottom: 88px; }
@@ -924,6 +937,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 .rooms-toolbar { width: min(1180px, calc(100% - 48px)); margin: 0 auto 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
 .rooms-toolbar-note { font: 600 12px Arial, sans-serif; color: var(--muted); }
+.rooms-toolbar-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
 .room-search { width: 320px; display: flex; gap: 10px; align-items: center; padding: 12px 18px; border: 1px solid var(--border); border-radius: 99px; color: var(--muted); background: var(--card); box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
 .room-search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--foreground); font: 13px Arial, sans-serif; }
 
@@ -1559,6 +1573,7 @@ html.dark .preview-window-line {
 .focus-notify small { color: var(--muted-foreground); font-size: 12px; text-align: center; }
 .focus-notify-button { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 99px; background: transparent; color: var(--foreground); font: 600 13px Arial, sans-serif; cursor: pointer; }
 .focus-notify-button[aria-pressed="true"] { border-color: var(--primary); color: var(--primary); background: var(--surface-soft); }
+.room-note-hint { margin: 0; font-size: 12px; color: var(--muted-foreground); }
 .room-note-form { display: flex; gap: 8px; margin-top: 6px; }
 .room-note-form input { flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 99px; background: var(--background); font-size: 13px; outline: 0; color: var(--foreground); }
 .room-note-form button { width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: 50%; color: #fff; background: var(--primary); cursor: pointer; flex-shrink: 0; }
@@ -2028,6 +2043,8 @@ html[data-theme="strawberry-lemonade"] .cozy-wallpaper-pattern::before {
   .site-nav { width: 100%; justify-content: flex-start; flex-wrap: wrap; gap: 10px 14px; }
   .nav-cta { padding: 8px 13px; }
   .how-grid { grid-template-columns: 1fr; gap: 24px; }
+  .welcome-guide { width: calc(100% - 32px); padding: 20px; }
+  .welcome-guide-steps { grid-template-columns: 1fr; }
   .map-grid { grid-template-columns: 1fr; }
   .room-card { grid-template-columns: 1fr; }
   .room-card-art { min-height: 180px; }

@@ -15,7 +15,8 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     } catch {
       window.localStorage.removeItem(key);
     } finally {
-      setHydrated(true);
+      // Queued after the setValue timer above, so `hydrated` only turns true once the stored value is in state.
+      window.setTimeout(() => setHydrated(true), 0);
     }
   }, [key]);
 

@@ -36,6 +36,12 @@ export function SiteHeader() {
           >
             My progress
           </Link>
+          <Link
+            href="/profile"
+            className={pathname === "/profile" ? "nav-link nav-active" : "nav-link"}
+          >
+            Profile
+          </Link>
           <ThemePicker compact />
           <Link href="/login" className="nav-login">
             <LogIn size={15} /> Log in
