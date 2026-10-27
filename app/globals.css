@@ -1819,7 +1819,9 @@ html.dark .preview-window-line {
 .map-toolbar { position: absolute; z-index: 4; top: 18px; left: 50%; display: flex; align-items: center; gap: 6px; min-height: 50px; padding: 6px 12px; transform: translateX(-50%); border: 1px solid var(--border); border-radius: 14px; background: var(--card); box-shadow: var(--shadow); }
 .toolbar-primary { padding: 8px 16px; border-radius: 99px; color: #fff; background: var(--primary); font: 700 12px Arial, sans-serif; border: 0; cursor: pointer; }
 .toolbar-button { width: 36px; height: 36px; display: grid; place-items: center; color: var(--muted); background: transparent; border: 0; border-radius: 8px; cursor: pointer; }
-.toolbar-button:hover { background: var(--lavender); color: var(--primary); }
+.toolbar-button:hover:not(:disabled) { background: var(--lavender); color: var(--primary); }
+.toolbar-button:disabled { color: var(--muted); opacity: 0.4; cursor: not-allowed; background: transparent; }
+.toolbar-button:disabled:hover { background: transparent; color: var(--muted); }
 .toolbar-save { padding: 8px 16px; border-radius: 99px; color: #fff; background: var(--primary); font: 700 12px Arial, sans-serif; border: 0; cursor: pointer; }
 .details-panel { position: absolute; z-index: 5; top: 20px; right: 20px; bottom: 20px; width: 330px; padding: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 20px; background: var(--card); box-shadow: var(--shadow); display: flex; flex-direction: column; }
 .details-panel-scroll { flex: 1; overflow-y: auto; padding: 24px 24px 0; display: flex; flex-direction: column; gap: 14px; }
