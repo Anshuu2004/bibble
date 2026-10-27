@@ -6,6 +6,7 @@ import { StudyRoomScene } from "@/components/rooms/study-room-scene";
 import { StudyRoomSidebar } from "@/components/rooms/study-room-sidebar";
 import { ThemePicker } from "@/components/ui/theme-picker";
 import { useFocusTimer } from "@/hooks/use-focus-timer";
+import { useTimerNotifications } from "@/hooks/use-timer-notifications";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useTheme } from "@/hooks/use-theme";
 import type { StudyRoom } from "@/types/room";
@@ -56,10 +57,27 @@ export function StudyRoomShell({ room }: { room: StudyRoom }) {
     triggerToast(`🎉 Completed a ${room.minutes}-min session in ${room.name}! Logged to My Progress.`);
   }, [room, triggerToast]);
 
+  const timerAlerts = useTimerNotifications();
+
+  const handleTimerFinished = useCallback(() => {
+    // The timer can report completion more than once for one run, so only alert the first time.
+    const alreadyHandled = loggedRunIdRef.current === runIdRef.current;
+    handleSessionComplete();
+    if (alreadyHandled) return;
+    timerAlerts.notify("Focus session finished", `Nice work, your ${room.minutes}-min session in ${room.name} is done.`);
+  }, [handleSessionComplete, timerAlerts, room]);
+
   const { active, formattedTime, toggleTimer, resetTimer, isCompleted, setIsCompleted } = useFocusTimer(
     room.minutes,
-    handleSessionComplete
+    handleTimerFinished
   );
+
+  const handleAlertsToggle = async () => {
+    const result = await timerAlerts.toggle();
+    if (result === "enabled") triggerToast("Timer alerts on. We will notify you when the session ends 🔔");
+    else if (result === "disabled") triggerToast("Timer alerts turned off");
+    else if (result === "denied") triggerToast("Notifications are blocked, allow them in your browser settings to get alerts");
+  };
 
   const handleTimerToggle = () => {
     if (isCompleted) runIdRef.current += 1;
@@ -170,6 +188,11 @@ export function StudyRoomShell({ room }: { room: StudyRoom }) {
             onCompleteEarly={handleManualComplete}
             onReset={handleTimerReset}
             isCompleted={isCompleted}
+            notifications={{
+              enabled: timerAlerts.enabled,
+              permission: timerAlerts.permission,
+              onToggle: handleAlertsToggle,
+            }}
           />
         </section>
 
