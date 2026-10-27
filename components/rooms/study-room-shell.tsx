@@ -2,6 +2,7 @@
 
 import { AmbientSound, type Soundscape } from "@/components/rooms/ambient-sound";
 import { FocusTimerPanel } from "@/components/rooms/focus-timer-panel";
+import { RoomGuidelines } from "@/components/rooms/room-guidelines";
 import { StudyRoomScene } from "@/components/rooms/study-room-scene";
 import { StudyRoomSidebar } from "@/components/rooms/study-room-sidebar";
 import { ThemePicker } from "@/components/ui/theme-picker";
@@ -10,7 +11,7 @@ import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useTheme } from "@/hooks/use-theme";
 import type { StudyRoom } from "@/types/room";
 import { recordFocusSession } from "@/lib/progress";
-import { ArrowLeft, Bell, Headphones, Sparkles, Users } from "lucide-react";
+import { ArrowLeft, Bell, BookOpen, Headphones, Sparkles, Users } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
@@ -25,12 +26,19 @@ export function StudyRoomShell({ room }: { room: StudyRoom }) {
   const { motif } = useTheme();
 
   const [joined, setJoined] = useState(false);
+  const [guidelinesOpen, setGuidelinesOpen] = useState(false);
   const [note, setNote] = useState("");
   const [notes, setNotes] = useLocalStorage<string[]>(`bibble-room-notes-${room.id}`, defaultNotes);
   const [soundscape, setSoundscape] = useState<Soundscape>("off");
   const [lampOn, setLampOn] = useState(true);
   const [catHearts, setCatHearts] = useState<number>(0);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const guidelinesButtonRef = useRef<HTMLButtonElement>(null);
+
+  const closeGuidelines = useCallback(() => {
+    setGuidelinesOpen(false);
+    guidelinesButtonRef.current?.focus();
+  }, []);
 
   const triggerToast = useCallback((msg: string) => {
     setToastMessage(msg);
@@ -149,10 +157,22 @@ export function StudyRoomShell({ room }: { room: StudyRoom }) {
               <h1>{room.name}</h1>
               <p>{room.description}</p>
             </div>
-            <div className="room-live-count">
-              <Users size={16} />
-              <strong>{room.participants + (joined ? 1 : 0)}</strong>
-              <span>studying now</span>
+            <div className="room-title-actions">
+              <div className="room-live-count">
+                <Users size={16} />
+                <strong>{room.participants + (joined ? 1 : 0)}</strong>
+                <span>studying now</span>
+              </div>
+              <button
+                ref={guidelinesButtonRef}
+                type="button"
+                className="room-guidelines-trigger"
+                onClick={() => setGuidelinesOpen(true)}
+                aria-haspopup="dialog"
+                aria-expanded={guidelinesOpen}
+              >
+                <BookOpen size={15} aria-hidden="true" /> Room guidelines
+              </button>
             </div>
           </div>
 
@@ -189,6 +209,8 @@ export function StudyRoomShell({ room }: { room: StudyRoom }) {
           onAddNote={handleAddNote}
         />
       </div>
+
+      <RoomGuidelines roomName={room.name} open={guidelinesOpen} onClose={closeGuidelines} />
     </main>
   );
 }
