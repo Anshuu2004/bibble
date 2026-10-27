@@ -103,6 +103,13 @@ export function LearningMapCanvas({ initialMap, editable = false }: { initialMap
     setSelectedId(id);
   };
 
+  /** Remove a bibble together with every edge that touches it. */
+  const deleteBibble = (id: string) => {
+    setNodes((current) => current.filter((node) => node.id !== id));
+    setEdges((current) => current.filter((edge) => edge.source !== id && edge.target !== id));
+    setSelectedId(null);
+  };
+
   const fitView = () => flowRef.current?.fitView({ padding: 0.22 });
 
   const currentMap = flowToMap(initialMap, nodes, edges);
@@ -163,7 +170,7 @@ export function LearningMapCanvas({ initialMap, editable = false }: { initialMap
       {!editable && <div className="map-canvas-hint"><Star size={14} /> Click a bibble to explore it</div>}
     </div>
     <AnimatePresence>{selected && <BibbleDetails key={selected.id} bibble={selected} onClose={() => setSelectedId(null)} onChange={updateSelected} onSave={saveMap} />}</AnimatePresence>
-    {editable && selected && <button className="delete-bibble" onClick={() => { setNodes((current) => current.filter((node) => node.id !== selected.id)); setSelectedId(null); }}><Trash2 size={15} /> Delete bibble</button>}
+    {editable && selected && <button className="delete-bibble" onClick={() => deleteBibble(selected.id)}><Trash2 size={15} /> Delete bibble</button>}
     {editable && <div className="editor-back-link"><ArrowLeft size={15} /> <span>Changes are kept on this device</span></div>}
   </div>
 </main>
